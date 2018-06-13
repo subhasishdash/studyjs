@@ -1,1 +1,1 @@
-# openshiftstudyjs
+# Studyjs.com tutorials

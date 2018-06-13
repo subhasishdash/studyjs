@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : How to read a file in Node.JS?</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>How to read a file in Node.JS?</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on Feb 12, 2017 at 9:00 PM</p>
+
+                <hr>
+
+                <!-- Preview Image -->
+<!--                 <img class="img-responsive" src="http://placehold.it/900x300" alt=""> -->
+
+<!--                 <hr> -->
+
+                <!-- Post Content -->
+<!--                 <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p> -->
+<!--                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p> -->
+<!--                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p> -->
+<!--                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p> -->
+<!--                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p> -->
+<strong>Reading</strong> a file in node.js is very easy.
+To do this, we will need to import 2 packages i.e. <strong>fs</strong> and <strong>path</strong>
+which are given by Node.js.
+
+<p>
+If you are new to node.js then please follow <a href="http://www.studyjs.com/nodejs/setup-basic-project.html">this</a> for basic project setup. Otherwise create a file named test.js and paste the below code .
+<pre>var fs = require('fs');
+var path = require('path');
+
+var filePath = path.join(__dirname, 'test.js');
+
+fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+    if (!err){
+    console.log('received data: ' + data);
+    }else{
+        console.log(err);
+    }
+
+});</pre>
+
+If everything is fine , you will be able to see test.js content in the console.
+</p>
+
+<h2><u>Synchonous and asynchronous file reading</u></h2>
+<p>
+	We can also read a file synchronously or asynchronously.
+	To read a file synchronously, follow the below code snippet :
+	<pre>var fs = require('fs');
+var path = process.cwd();
+var buffer = fs.readFileSync(path + "\\test.js");
+console.log(buffer.toString());</pre>
+
+<br/>
+And for asynchronous file reading , use this :
+<pre> var fs = require('fs');
+ var path = require('path');
+ var data = bufferFile('test.js');
+ console.log(data);
+ function bufferFile(relPath) {
+    return fs.readFileSync(path.join(__dirname, relPath),{ encoding: 'utf8' }); 
+ }</pre>
+ To read a buffer use this :
+ <pre>
+return fs.readFileSync(path);</pre>
+</p>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Node.js</span></h4><h4>
+                  <small class="text-muted" style="font-family:courier,'new courier';">12th Feb 2017</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+                <hr>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

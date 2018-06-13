@@ -1,0 +1,280 @@
+<div class="container-fluid">
+      
+      <div class="row">
+        <div class="col-12">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" ng-click="retrieveData('disposition', 'q_med')">
+    <a class="nav-link active show" data-toggle="tab" href="#dispos" role="tab" aria-controls="home" aria-selected="false">Disposition</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#documentdetails" role="tab" aria-controls="profile" aria-selected="false">Document Details</a>
+  </li>
+    <li class="nav-item" ng-click="retrieveData('parts', 'q_med')">
+    <a class="nav-link" data-toggle="tab" href="#part" role="tab" aria-controls="Classification" aria-selected="false">Parts</a>
+  </li>
+    <li class="nav-item" ng-click="retrieveData('root_causes', 'q_med')">
+    <a class="nav-link" data-toggle="tab" href="#rootcauses" role="tab" aria-controls="Company_Info" aria-selected="false">Root Causes</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('security', 'q_med')">
+    <a class="nav-link" data-toggle="tab" href="#secure" role="tab" aria-controls="sites" aria-selected="false">Security</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('sites', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#site" role="tab" aria-controls="Departments" aria-selected="false">Sites</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('suppliers', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#supply" role="tab" aria-controls="Customers" aria-selected="false">Suppliers</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#" role="tab" aria-controls="parts" aria-selected="true">General</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('audit_types', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#audittypes" role="tab" aria-controls="FMEA" aria-selected="false">Audit Types</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('car_types', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#cartypes" role="tab" aria-controls="FMEA" aria-selected="false">CAR Type</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('categories', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#category" role="tab" aria-controls="FMEA" aria-selected="false">Categories</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('customers', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="FMEA" aria-selected="false">Customers</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('defects', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#defect" role="tab" aria-controls="FMEA" aria-selected="false">Defects</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('departments', 'q_med')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#department" role="tab" aria-controls="FMEA" aria-selected="false">Departments</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+ 
+
+  <div class="tab-pane fade active show" id="dispos" role="tabpanel" aria-labelledby="home-tab">
+  
+<div id="clicentfor" class="height_155 scrollFy scrollWithFrm">
+  <button class="btn btn-faem" ng-click="addNewColumn('disposition', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('disposition', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('disposition', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('disposition', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Disposition</th>
+        <th>Description</th>
+        <th>Sort Order</th>
+      </tr>
+    </thead>
+    <tbody id="disposition">
+    </tbody>
+  </table>
+</div>
+
+  </div>
+
+  <div class="tab-pane fade" id="part" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('parts', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('parts', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('parts', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('parts', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Part Number</th>
+        <th>Description</th>
+        <th>Revision</th>
+        <th>Alias</th>
+        <th>Active?</th>
+      </tr>
+    </thead>
+    <tbody id="parts">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="rootcauses" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('root_causes', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('root_causes', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('root_causes', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('root_causes', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Type of Root Cause</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="root_causes">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('sites', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('sites', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('sites', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('sites', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Site</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="sites">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="supply" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('suppliers', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('suppliers', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('suppliers', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('suppliers', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Code Name</th>
+        <th>Company Name</th>
+        <th>Billing Address</th>
+        <th>City</th>
+        <th>State or Province</th>
+        <th>Postal Code</th>
+        <th>Country</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody id="suppliers">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="audittypes" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('audit_types', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('audit_types', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('audit_types', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('audit_types', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Audit Type</th>
+        <th>Description</th>
+        <th>Sort Order</th>
+      </tr>
+    </thead>
+    <tbody id="audit_types">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="cartypes" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('car_types', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('car_types', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('car_types', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('car_types', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>CAR Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="car_types">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('categories', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('categories', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('categories', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('categories', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Category</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="categories">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('customers', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('customers', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('customers', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('customers', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Customer Code</th>
+        <th>Company Name</th>
+        <th>Billing Address</th>
+        <th>City</th>
+        <th>State or Province</th>
+        <th>Pin</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+    <tbody id="customers">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="defect" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('defects', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('defects', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('defects', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('defects', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Defect Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="document_details">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('departments', 'q_med')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('departments', 'q_med')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('departments', 'q_med')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('departments', 'q_med')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Dept Number/Code</th>
+        <th>Department Name</th>
+        <th>Manager Name</th>
+        <th>Active?</th>
+      </tr>
+    </thead>
+    <tbody id="departments">
+    </tbody>
+  </table>
+  </div>
+
+
+</div>
+</div>
+
+
+</div>
+
+        </div>
+      </div>

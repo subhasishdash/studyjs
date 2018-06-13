@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Websocket implementation in Javascript and Node.JS</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Websocket implementation in Javascript and Node.JS</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 23rd March 2016 at 9:00 PM</p>
+
+               <h3><u>Problem without WebSockets</u></h3>
+    			<p>WebSocket is a protocol providing full-duplex communication channels over a single TCP connection.
+    			The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011,
+    			and the WebSocket API in Web IDL is being standardized by the W3C. <a target='_blank' href="https://en.wikipedia.org/wiki/WebSocket">Read More...</a></p>
+    			<p>Suppose we are building a chatting application, so, without websockets we have to do Ajax polling
+    			 to server every 100ms to look for a new message ,but this increases an overhead on the server because when we do AJAX polling , 
+    			 most of the cases not only the server doesn't send back any updated chat message but also consumes a lot of network overload on the server.
+    			 Hence , we end up calling the server again and again unnecessarily.</p>
+    			 
+    			 <h3><u>How to fix the above issue?</u></h3>
+    			<p>If we use websockets , we could easily optimize our server from getting lot of necessary calls
+    			 which we get while using AJAX polling for a chatting application.</p>
+    			 
+    			 <h3><u>How to build?</u></h3>
+    			 <p>In this tutorial , we will be using JavaScript as WebSocket Client and Node.JS as WebSocket Server</p>
+    			 <p>Let's write our WebSocket Client and server</p>
+    			 <h4>Websocket Client:</h4>
+    			 <pre>var protocol = 'ws://';
+//if the website is running in https
+if(location.protocol === 'https:'){
+	protocol = 'wss://';
+}
+//calling protocol://location:host/requestURL 
+//For eg. http://localhost/chatting for below request
+//to establish connection to server's WebSocket.
+var ws = new WebSocket(protocol + location.host + '/chatting');
+ws.binaryType = 'arraybuffer';
+ws.onmessage = function(event) {
+	console.log('Message received from WebSocket server');
+};
+ws.onopen = function(event) {
+	console.log('Con opened');
+};
+ws.onerror = function(event){
+	console.log('Con error');
+}; 
+//send message to server
+ws.send('hii from client');</pre>
+<h4>Websocket Server:</h4>
+<pre>var express = require('express');
+var app = express();
+var expressWs = require('express-ws')(app);
+app.ws('/chatting', function(ws, req) {
+	ws.on('message', function(msg) {
+		//message from WebSocket client will be recieved here.
+		console.log('Message from CLient ' + msg);
+		//send message from server to client
+		ws.send('hii from server');
+	});
+	ws.on('close', function(msg) {
+		console.log('ws close');
+		ws.close();
+	       ws._socket.destroy();
+	});
+	ws.on('error', function(error) {
+		if(error != null) {
+	         console.log('error: %s', error);
+	         ws.close();
+	         ws._socket.destroy();
+		}
+	});
+	ws.on('open', function(msg) {
+		console.log('ws open');
+	});
+});</pre>
+<h3>Note: Communication between Client and Server:</h3>
+<pre>//In Javascript
+ws.send(msgtoserver);//can be called from anywhere within the javascript, once the Websocket is initialized. 
+/In node.js
+ws.send(messageToCLient);//can be called from node.js, once the Websocket connection is initialized.</pre>
+
+<p>Now, instead of polling using AJAX for new messages, if we use websockets we can directly get the messages 
+from server using ws.send(msg); and onmessage in client to recieve the message and similarly to send a message from a client to a server we can use ws.send(msg); again</p>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">JavaScript</span>&nbsp;<span class="label label-default">Node.JS</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">23rd March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

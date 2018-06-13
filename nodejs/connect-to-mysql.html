@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : How to Connect to MySQL Database using Node.js?</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>How to Connect to MySQL Database using Node.js?</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+				
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on Dec 10th, 2016</p>
+
+                <hr>
+
+				<h3><u>Prerequisites:</u></h3>
+				<p>This tutorial assumes you already have knowledge of
+				 working with MySQL Database and have installed it on your PC.
+				 If you have not done so, please install it from 
+				 <a href="http://dev.mysql.com/downloads/" target="_blank">http://dev.mysql.com/downloads/</a>.
+				</p>
+				
+				<p>
+				You will also need to have Node.JS installed on you PC. If you have not done that 
+				please install it from 
+				<a href="http://nodejs.org/" target="_blank">http://nodejs.org/</a>
+				</p>
+				
+				<h3><u>Setting up the project:</u></h3>
+				<p>In this tutorial, I am going to use window as OS, you can use OS of your choice</p>
+				<p>Please see my command prompt output and input commands below and follow along to create you own</p>
+				<pre>(c) 2013 Microsoft Corporation. All rights reserved.
+
+E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs>mkdir mysqldemo
+
+E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs>cd mysqldemo
+
+E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs\mysqldemo>npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install &lt;pkg&gt; --save` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+name: (mysqldemo)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs\mysqldemo\package.json:
+
+{
+  "name": "mysqldemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+
+Is this ok? (yes) yes
+
+E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs\mysqldemo></pre>
+
+<h3><u>Downloading the MySQL library for the project:</u></h3>
+<p>Now, let's download the MySQL library from the npm repository to work with MySQL DB.</p>
+<p>This is a very easy process and depending on your network speed, the library gets downloaded,
+ but for a fair 1 MBPS connection , it should hardly take 1-2 secs. </p>
+<p>So, we need to give the following command in the command prompt : <strong>npm install --save mysql</strong></p>
+<p>Please check my output upon giving the above command. 
+Please note that the versions might change from when you will
+ see this tutorial but it should work fine for you.</p>
+ <pre>E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs\mysqldemo>npm install --save mysql
+npm WARN package.json mysqldemo@1.0.0 No description
+npm WARN package.json mysqldemo@1.0.0 No repository field.
+npm WARN package.json mysqldemo@1.0.0 No README data
+mysql@2.12.0 node_modules\mysql
+├── sqlstring@2.2.0
+├── bignumber.js@2.4.0
+└── readable-stream@1.1.14 (isarray@0.0.1, inherits@2.0.3, string_decoder@0.10.31, core-util-is@1.0.2)
+
+E:\DEVELOPMENT\WEB-APPS\studyjs\nodejs\mysqldemo></pre>
+
+<h3><u>Writing the MySQL Utility file to be used across the project:</u></h3>
+<p>It is always better to have the Database code in a separate file so that we do not rewrite it 
+again and again throughout the project, so let's create a mysqlutil.js file as shown below:</p>
+<pre>var mysql = require('mysql');
+var connection = null;
+
+var MySQL = function MySQL(){};
+
+var connection = null;
+
+MySQL.prototype.init = function () {
+    connection = mysql.createConnection({
+        host     : 'localhost',
+        user     : 'root',
+        password : '********(change with your password here)',
+        database : 'test(give your database name or create a test database)'
+    });
+    connection.connect();
+};
+
+MySQL.prototype.fetchData = function (data) {
+    connection.query('show tables', function(err, rows, fields)   
+    {  
+        if(!err) {
+            console.log(rows);
+        } else {
+            console.log('Something went wrong : ' + err);
+        }
+    }); 
+}
+
+MySQL.prototype.closeConnection = function() {
+    connection.end();
+}
+
+module.exports = new MySQL();</pre>
+
+<h3><u>Testing the MySQL Utility file and connecting to the Database:</u></h3>
+<p>We are all done with the MySQL setup, now let's just test whether that works or not. </p>
+<pre>var MySQLDB = require('./mysqlutil');
+//initialize the database
+MySQLDB.init();
+//use the Database
+MySQLDB.fetchData();
+//close the connection
+MySQLDB.closeConnection();</pre>
+<br/>
+<p>If everything works fine you should be able to see all the tables inside you database 
+as a Javascript Object array. If you are still facing issues ,please add your comment below and I will answer your query asap.</p>
+                <!-- Preview Image -->
+<!--                 <img class="img-responsive" src="http://placehold.it/900x300" alt=""> -->
+
+<!--                 <hr> -->
+
+
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Node.js</span>&nbsp;<span class="label label-default">Javascript</span></h4><h4>
+                  <small class="text-muted" style="font-family:courier,'new courier';">10th Dec 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+                <hr>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

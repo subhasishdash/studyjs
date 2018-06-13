@@ -1,0 +1,253 @@
+<div class="container-fluid">
+      
+      <div class="row">
+        <div class="col-12">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active show" ng-click="retrieveData('asset_categories', 'asset_tracking')" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">Asset Categories</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Calibration Tests</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('departments', 'asset_tracking')">
+    <a class="nav-link" data-toggle="tab" href="#depts" role="tab" aria-controls="Detection_Rating" aria-selected="false">Departments</a>
+  </li>
+    <li class="nav-item" ng-click="retrieveData('dispositions', 'asset_tracking')">
+    <a class="nav-link" data-toggle="tab" href="#disp" role="tab" aria-controls="Classification" aria-selected="false">Dispositions</a>
+  </li>
+    <li class="nav-item" ng-click="retrieveData('manufacturers', 'asset_tracking')">
+    <a class="nav-link" data-toggle="tab" href="#manuf" role="tab" aria-controls="Company_Info" aria-selected="false">Manufacturers</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('models', 'asset_tracking')">
+    <a class="nav-link" data-toggle="tab" href="#model" role="tab" aria-controls="sites" aria-selected="false">Models</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('options', 'asset_tracking')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#option" role="tab" aria-controls="Departments" aria-selected="false">Options</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pmfr" role="tab" aria-controls="Customers" aria-selected="false">Part Numbers</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('pm_frequency', 'asset_tracking')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pmfr" role="tab" aria-controls="parts" aria-selected="true">PM Frequency</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#fmeatype1" role="tab" aria-controls="FMEA" aria-selected="false">PM Part List</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#fmeatype1" role="tab" aria-controls="FMEA" aria-selected="false">PM Types</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('vendors', 'asset_tracking')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="FMEA" aria-selected="false">Vendors</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('unschedule_maint_priority', 'asset_tracking')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#unschedule_maint" role="tab" aria-controls="FMEA" aria-selected="false">Unschedule Maint. Priority</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+ 
+
+  <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+  
+<div id="clicentfor" class="height_155 scrollFy scrollWithFrm">
+  <button class="btn btn-faem" ng-click="addNewColumn('asset_categories', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('asset_categories', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('asset_categories', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('asset_categories', 'asset_tracking')">Delete</button>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Asset Category</th>
+        <th>Description</th>
+        <th>Active</th>    
+      </tr>
+    </thead>
+    <tbody id="asset_categories">
+    </tbody>
+  </table>
+  
+</div>
+
+  </div>
+<div class="tab-pane fade" id="depts" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('departments', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('departments', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('departments', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('departments', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Department Name</th>
+        <th>Department Number</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody id="departments">
+    </tbody>
+  </table>
+  
+  
+  </div>
+
+  <div class="tab-pane fade" id="disp" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('dispositions', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('dispositions', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('dispositions', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('dispositions', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Disposition</th>
+        <th>Description</th>
+        <th>Sort Order</th>
+      </tr>
+    </thead>
+    <tbody id="dispositions">
+    </tbody>
+  </table>
+  
+  
+  </div>
+
+  <div class="tab-pane fade" id="manuf" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('manufacturers', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('manufacturers', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('manufacturers', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('manufacturers', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Manufacturer Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State/Province</th>
+        <th>Postal/Zip Code</th>
+        <th>Country/Region</th>
+        <th>Contact First Name</th>
+        <th>Contact Last Name</th>
+      </tr>
+    </thead>
+    <tbody id="manufacturers">
+    </tbody>
+  </table>
+  
+  
+  </div>
+
+
+<div class="tab-pane fade" id="model" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('models', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('models', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('models', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('models', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Model Number</th>
+        <th>Manufacturer</th>
+        <th>Asset Description</th>
+        <th>Warranty Period</th>
+        <th>Callibration Cost</th>
+        <th>Warnings</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="models">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="option" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('options', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('options', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('options', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('options', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Parameter</th>
+        <th>Parameter Value</th>
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <tbody id="options">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="pmfr" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('pm_frequency', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('pm_frequency', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('pm_frequency', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('pm_frequency', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Type</th>
+        <th>Frequency</th>
+        <th>Description</th>
+        <th>Default Counter</th>
+      </tr>
+    </thead>
+    <tbody id="pm_frequency">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('vendors', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('vendors', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('vendors', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('vendors', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+
+      <tr>
+     <th>&nbsp;</th>
+        <th>Vendor Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State/Province</th>
+        <th>Postal/Zip Code</th>
+        <th>Country/Region</th>
+        <th>Contact First Name</th>
+        <th>Contact Last Name</th>
+      </tr>
+    </thead>
+    <tbody id="vendors">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="unschedule_maint" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('unschedule_maint_priority', 'asset_tracking')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('unschedule_maint_priority', 'asset_tracking')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('unschedule_maint_priority', 'asset_tracking')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('unschedule_maint_priority', 'asset_tracking')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Priority</th>
+        <th>Sort Order</th>
+      </tr>
+    </thead>
+    <tbody id="unschedule_maint_priority">
+    </tbody>
+  </table>
+  </div>
+
+</div>
+</div>
+
+
+</div>
+
+        </div>
+      </div>

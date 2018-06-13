@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Zoom and pan a image in Fabric.JS using mouse events</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Zoom and pan a image in Fabric.JS using mouse events</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 21st March 2016 at 9:00 PM</p>
+
+                <hr>
+              Scaling a image in Fabric.JS is very easy.
+              <br/>
+              To do so we will need the following things:
+              <ul class="list-group">
+              	<li class="list-group-item">1)Canvas</li>
+              	<li class="list-group-item">2)A image</li>
+              	<li class="list-group-item">3)Fabric.JS library</li>
+              </ul>
+              First of all ,lets download fabric.js from cdnjs.com.<br/> 
+              After that let's create a canvas where we will add the image to:
+              <pre>&lt;canvas width='512' height='512' id='canvas'&gt;&lt;/canvas&gt;
+(Image will be rendered)</pre>
+              <pre>&lt;div id="canvasarea"&gt;&lt;canvas width='512' height='512' id='canvas1'&gt;&lt;/canvas&gt;&lt;/div&gt;
+(Image will be rendered with zoom functionality)</pre>
+<pre>&lt;canvas width='512' height='512' id='canvas2'&gt;&lt;/canvas&gt;
+(Image will be rendered with panning functionality)</pre>
+              Now, lets add a image to canvas.
+              <pre>var canvas = fabric.Canvas('canvas');//render image to this canvas
+var canvas1 = fabric.Canvas('canvas1');//render image to this canvas with zoom functionality
+var canvas2 = fabric.Canvas('canvas2');//render image to this canvas with pan functionality
+var image = new Image();
+image.onload = function() {
+	loadImage(image, canvas);
+	loadImage(image, canvas1);
+	loadImage(image, canvas2);
+}
+function loadImage(image, canv) {
+var img = new fabric.Image(image, 
+{
+		selectable : false,
+		width : image.width,
+		height : image.height,
+		lockUniScaling: true,
+		centeredScaling: true,
+	     	alignX : "mid",
+		alignY : "mid",
+	});
+	canv.add(img);
+	//bring image to center
+	canv.centerObject(img);
+	applyZoom();
+}
+image.src = '../images/fabricjs/dog.jpg';
+</pre> 
+<canvas width='512' height='512' id='canvas'></canvas>
+<hr/>
+As you can see above we have added the image to canvas successfully.
+Now we have to add zoom functionality to the image.
+<pre>
+/**
+ * Used to apply Zooming on the canvas.
+ */
+var applyZoom = function () {
+	var canvasarea = document.getElementById("canvasarea");
+	if (canvasarea.addEventListener) {
+		// IE9, Chrome, Safari, Opera
+		canvasarea.addEventListener("mousewheel", zoom, false);
+		// Firefox
+		canvasarea.addEventListener("DOMMouseScroll", zoom, false);
+	}
+	// IE 6/7/8
+	else canvasarea.attachEvent("onmousewheel", zoom);
+	return this;
+}
+
+function zoom(e) {  
+		var evt=window.event || e;
+		var delta = evt.detail? evt.detail*(-120) : evt.wheelDelta;
+		var curZoom = canvas1.getZoom(),  newZoom = curZoom + delta / 4000,
+		x = e.offsetX, y = e.offsetY;
+		//applying zoom values.
+		canvas1.zoomToPoint({ x: x, y: y }, newZoom);
+		if(e != null)e.preventDefault();
+		return false;
+}  </pre>
+Now, you can scroll your mouse over the below canvas to zoom in or zoom out.
+<div id="canvasarea"><canvas width='512' height='512' id='canvas1'></canvas></div>
+
+<hr/>
+Let's add the panning functionality now:
+<pre>
+var panning = false;
+canvas2.on('mouse:up', function (e) {
+    panning = false;
+});
+canvas2.on('mouse:out', function (e) {
+    panning = false;
+});
+canvas2.on('mouse:down', function (e) {
+    panning = true;
+});
+canvas2.on('mouse:move', function(e) {
+	//allowing pan only if the image is zoomed.
+	if (panning &amp;&amp; e &amp;&amp; e.e) {
+		var delta = new fabric.Point(e.e.movementX, e.e.movementY);
+		canvas2.relativePan(delta);
+	}
+});</pre>
+<pre>Note:
+I have used three different canvas where first canvas(canvas id=canvas) renders the image
+2nd image(canvas id=canvas1) will render the image and apply zoom functionality to it
+3rd image(canvas id=canvas2) will render the image and apply panning functionality.
+You could use it for a single image ,to do so ,
+Copy paste all the codes in this page and replace all canvas2 and canvas1 to canvas</pre>
+
+And finally ,below image pans the image. You could check it by dragging the image using your mouse. 
+<canvas width='512' height='512' id='canvas2'></canvas>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Fabric.js</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">21st March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+	<script src="../scripts/libs/fabric.min.js"></script>
+	<script type="text/javascript">
+	var canvas = new fabric.Canvas('canvas');
+	var canvas1 = new fabric.Canvas('canvas1');
+	var canvas2 = new fabric.Canvas('canvas2');
+	var image = new Image();
+	image.onload = function() {
+		loadImage(image, canvas);
+		loadImage(image, canvas1);
+		loadImage(image, canvas2);
+	}
+	function loadImage(image, canv) {
+		var img = new fabric.Image(image, 
+		{
+			selectable : false,
+			width : image.width,
+			height : image.height,
+			lockUniScaling: true,
+			centeredScaling: true,
+		     	alignX : "mid",
+			alignY : "mid",
+		});
+		canv.add(img);
+		//bring image to center
+		canv.centerObject(img);
+		applyZoom();
+	}
+	image.src = '../images/fabricjs/dog.jpg';
+	
+	/**
+	 * Used to apply Zooming on the canvas.
+	 */
+	var applyZoom = function () {
+		var canvasarea = document.getElementById("canvasarea");
+		if (canvasarea.addEventListener) {
+			// IE9, Chrome, Safari, Opera
+			canvasarea.addEventListener("mousewheel", zoom, false);
+			// Firefox
+			canvasarea.addEventListener("DOMMouseScroll", zoom, false);
+		}
+		// IE 6/7/8
+		else canvasarea.attachEvent("onmousewheel", zoom);
+		return this;
+	}
+	
+	function zoom(e) {  
+			var evt=window.event || e;
+			var delta = evt.detail? evt.detail*(-120) : evt.wheelDelta;
+			var curZoom = canvas1.getZoom(),  newZoom = curZoom + delta / 4000,
+			x = e.offsetX, y = e.offsetY;
+			//applying zoom values.
+			canvas1.zoomToPoint({ x: x, y: y }, newZoom);
+			if(e != null)e.preventDefault();
+			return false;
+	} 
+		var panning = false;
+		canvas2.on('mouse:up', function (e) {
+		    panning = false;
+		});
+		canvas2.on('mouse:out', function (e) {
+		    panning = false;
+		});
+		canvas2.on('mouse:down', function (e) {
+		    panning = true;
+		});
+		canvas2.on('mouse:move', function(e) {
+			//allowing pan only if the image is zoomed.
+			if (panning && e && e.e) {
+				var delta = new fabric.Point(e.e.movementX, e.e.movementY);
+				canvas2.relativePan(delta);
+			}
+		});
+	</script>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Canny Edge detection using Fabric.js and Javascript</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+
+            <!-- Blog Post Content Column -->
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Canny Edge detection using Fabric.js and Javascript</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 06th April 2016 at 8:00 PM</p>
+
+                <hr>
+<div class="col-lg-8">
+                <!-- Preview Image -->
+<!--                 <img class="img-responsive" src="http://placehold.it/900x300" alt=""> -->
+
+<!--                 <hr> -->
+
+                <!-- Post Content -->
+ <br/>
+              <p>The Canny edge detector is an edge detection operator that uses a multi-stage algorithm to detect a wide range of edges in images.
+              It was developed by John F. Canny in 1986.
+              Canny also produced a computational theory of edge detection explaining why the technique works.
+              
+              <br/>
+              <u><h4>Process of Canny edge detection algorithm</h4></u>
+
+	The Process of Canny edge detection algorithm can be broken down to 5 different steps:
+<ul class="list-group">
+	<li class="list-group-item">Apply Gaussian filter to smooth the image in order to remove the noise</li>
+	<li class="list-group-item">Find the intensity gradients of the image</li>
+	<li class="list-group-item">Apply non-maximum suppression to get rid of spurious response to edge detection</li>
+	<li class="list-group-item">Apply double threshold to determine potential edges</li>
+	<li class="list-group-item">Track edge by hysteresis: Finalize the detection of edges by suppressing all the other edges that are weak and not connected to strong edges.</li>
+</ul>
+	You could read it in details <a href="https://en.wikipedia.org/wiki/Canny_edge_detector" onclick="__gaTracker('send', 'event', 'outbound-article', 'https://en.wikipedia.org/wiki/Canny_edge_detector', 'Canny Edge Detector');" target="_blanket">here</a> , let us implement it.
+</p>
+
+<p>
+	Implementation will conclude the following steps :
+<ul class="list-group">
+	<li class="list-group-item">1) Create a Fabric.js canvas</li>
+	<li class="list-group-item">2) Add a image to the above created canvas</li>
+	<li class="list-group-item">3) Write a Custom Filter to add Canny Edge detection algorithm.</li>
+	<li class="list-group-item">4) Test the App.</li>
+</ul>
+</p>
+<p>
+	<h4>1) Create a Fabric.js canvas</h4>
+	First of all ,get the Fabric.js library from cdnjs.com or fabricjs.com, after that create a canvas using the below snippet
+    <pre>var canvas = new fabric.Canvas('canvas');</pre>
+    
+    <h4>2) Add a image to the above created canvas</h4>
+    Now lets add a image to the canvas created above in step 1 :
+    <pre>
+var image = new Image();
+image.onload = function() {
+	loadImage(image);
+}
+function loadImage(image) {
+	fabric.Image.fromURL('../images/cartoon.jpg', function (oImg) {
+		oImg.filters.push(
+				new fabric.Image.filters.CannyEdgeDetect);
+		canvas.add(oImg);
+	    canvas.centerObject(oImg);
+	    canvas.renderAll();
+	  }, {"scaleX": 1, "scaleY": 1});
+}
+//adding a button handler to listen for canny image processing events.
+$("#canny").on("click", function () {
+	var objects = canvas.getObjects();
+	var cimg= objects[0];  
+	if(cimg.filters[2] == null) {
+		cimg.filters[2] = new fabric.Image.filters.CannyEdgeDetect;
+	}
+    cimg.applyFilters(canvas.renderAll.bind(canvas));
+});
+    </pre>
+    
+    <h4>3) Write a Custom Filter to add Canny Edge detection algorithm.</h4>
+    Now, we need a write a custom filter class to add canny edge detection filter to Fabric.js.
+    <br/>
+    If you are interested in learning how to add a custom filter in fabric.js, 
+    then you could visit another tutorial explaining <a href="http://www.studyjs.com/fabricjs/fabricjs.html">How to write a custom filter in Fabric.js</a>
+    to understand the flow better.
+    <br/>
+    <h5>Custom class for canny edge detection :</h5>
+    <pre>fabric.Image.filters.CannyEdgeDetect = fabric.util.createClass(fabric.Image.filters.BaseFilter, /** @lends fabric.Image.filters.MyFilter.prototype */ {
+
+	    /**
+	     * Filter type
+	     * @param {String} type
+	     * @default
+	     */
+	    type: 'CannyEdgeDetect',
+
+	    /**
+	     * Constructor
+	     */
+	    initialize: function(options) {
+	      options = options || { };
+	    },
+
+	    /**
+	     * Applies filter to canvas element
+	     * @param {Object} canvasEl Canvas element to apply filter to
+	     */
+	    applyTo: function(canvasEl) {
+	    	console.log("applying edge detect");
+	    	var ht = 100;
+	        var lt = 40;
+	        var sigma = 1.4;
+	        var kernelSize = 3;
+	        window.canny = CannyJS.canny(canvasEl, ht, lt, sigma, kernelSize);
+	        console.log(canny);
+	        canny.drawOn(canvasEl);
+	        console.log("Generated image data 7" );
+	        $('input[type=checkbox]').attr('disabled','true');
+	        $('input[type=range]').attr('disabled','true');
+	        $("input#ed").removeAttr("disabled");
+	    },
+
+	    /**
+	     * Returns object representation of an instance
+	     * @return {Object} Object representation of an instance
+	     */
+	    toObject: function() {
+	      return extend(this.callSuper('toObject'), {
+
+	      });
+	    }
+	  });</pre>
+	  
+	  <h5>And canny edge detection algorithm will be something like this :</h5>
+	  <pre>  var CannyJS, GrayImageData;
+
+  var generateMatrix = function(width, height, initialValue) {
+    var matrix = [];
+    for (var x = 0; x < width; x++) {
+      matrix[x] = [];
+      for (var y = 0; y < height; y++) {
+        matrix[x][y] = initialValue;
+      }
+    }
+    return matrix;
+  };
+
+
+  /**
+   * Class that represents gray-scaled image data
+   */
+
+  GrayImageData = (function() {
+
+    /**
+     * construct a new image data
+     * @param {number} width of the image
+     * @param {number} height of the image
+     */
+    function GrayImageData(width, height) {
+      this.width = width;
+      this.height = height;
+      this.data = generateMatrix(this.width, this.height, 0);
+      //this;
+    }
+
+
+    /**
+     * load image data from canvas and store it as a matrix of gray-scaled pixels
+     * @param {object} canvas object
+     */
+
+    GrayImageData.prototype.loadCanvas = function(canvas) {
+      var b, ctx, d, g, i, r, rawdata, x, y;
+      ctx = canvas.getContext('2d');
+      rawdata = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      x = 0;y = 0;
+      for (i = 0; i < rawdata.length; i += 4) {
+        d = rawdata[i]; r = rawdata[i]; g = rawdata[i + 1]; b = rawdata[i + 2];
+        this.data[x][y] = Math.round(0.298 * r + 0.586 * g + 0.116 * b);
+        if (x === this.width - 1) {
+          x = 0;
+          y += 1;
+        } else {
+          x += 1;
+        }
+      }
+      return this;
+    };
+
+
+    /**
+     * get the neighbor of a given point
+     * @param {number} x corrdinate of the point
+     * @param {number} y corrdinate of the point
+     * @param {number} size of the neighbors
+     * @return {array} matrix of the neighbor of the point
+     */
+
+    GrayImageData.prototype.getNeighbors = function(x, y, size) {
+      var i, j, neighbors, trnsX, trnsY ;
+      neighbors = generateMatrix(size, size, 0);
+      for (i = 0; i < size; i++) {
+        neighbors[i] = [];
+        for (j = 0; j < size; j++) {
+          trnsX = x - (size - 1) / 2 + i;
+          trnsY = y - (size - 1) / 2 + j;
+          if (this.data[trnsX] && this.data[trnsX][trnsY]) {
+            neighbors[i][j] = this.data[trnsX][trnsY];
+          } else {
+            neighbors[i][j] = 0;
+          }
+        }
+      }
+      return neighbors;
+    };
+
+
+    /**
+     * iterate all the pixel in the image data
+     * @param {number} size of the neighbors given to
+     * @param {function} function that will applied to the pixel
+     */
+
+    GrayImageData.prototype.eachPixel = function(neighborSize, func) {
+      var current, neighbors, x, y;
+      for (x = 0; x < this.width; x++) {
+        for (y = 0; y < this.height; y++) {
+          current = this.data[x][y];
+          neighbors = this.getNeighbors(x, y, neighborSize);
+          func(x, y, current, neighbors);
+        }
+      }
+      return this;
+    };
+    /**
+     * return a deep copy of this object
+     * @return {object} the copy of this object
+     */
+
+    GrayImageData.prototype.copy = function() {
+      var copied, x, y;
+      copied = new GrayImageData(this.width, this.height);
+      for (x = 0; x < this.width; x++) {
+        for (y = 0; y < this.height; y++) {
+          copied.data[x][y] = this.data[x][y];
+        }
+      }
+      copied.width = this.width;
+      copied.height = this.height;
+      return copied;
+    };
+
+
+    /**
+     * draw the image on a given canvas
+     * @param {object} target canvas object
+     */
+
+    GrayImageData.prototype.drawOn = function(canvas) {
+    	var color, ctx, i, j, imgData;
+    	ctx = canvas.getContext('2d');
+    	imgData = ctx.createImageData(canvas.width, canvas.height);
+    	for (y = 0, j = 0; y < this.height; y++) {
+    		for (x = 0; x < this.width; x++) {
+    			for (i = 0; i <= 2; i++) {
+    				imgData.data[j++] = this.data[x][y];
+    			}
+    			imgData.data[j++] = 255;
+    		}
+    	}
+    	return ctx.putImageData(imgData, 0, 0);
+    };
+
+
+    /**
+     * fill the image with given color
+     * @param {number} color to fill
+     */
+
+    GrayImageData.prototype.fill = function(color) {
+      var x, y, _results;
+      _results = [];
+      for (y = 0; y < this.height; y++) {
+        _results.push((function() {
+          var _results1;
+          _results1 = [];
+          for (x = 0; x < this.width; x++) {
+            _results1.push(this.data[x][y] = color);
+          }
+          return _results1;
+        }).call(this));
+      }
+      return _results;
+    };
+
+    return GrayImageData;
+
+  })();
+
+
+  /**
+   * object that holds methods for image processing
+   */
+
+  CannyJS = {};
+
+
+  /**
+   * generate kernel matrix
+   * @param {number} [sigmma] value of sigmma of gauss function
+   * @param {number} [size] size of the kernel (must be an odd number)
+   * @return {array} kernel matrix
+   */
+
+  CannyJS.generateKernel = function(sigmma, size) {
+    var e, gaussian, i, j, kernel, sum, x, y;
+    e = 2.718;
+    kernel = generateMatrix(size, size, 0);
+    sum = 0;
+    for (i = 0; i < size ; i++) {
+      x = -(size - 1) / 2 + i;
+      for (j = 0; j < size; j++) {
+        y = -(size - 1) / 2 + j;
+        gaussian = (1 / (2 * Math.PI * sigmma * sigmma)) * Math.pow(e, -(x * x + y * y) / (2 * sigmma * sigmma));
+        kernel[i][j] = gaussian;
+        sum += gaussian;
+      }
+    }
+    for (i = 0; i < size; i++) {
+      for (j = 0; j < size; j++) {
+        kernel[i][j] = (kernel[i][j] / sum).toFixed(3);
+      }
+    }
+    console.log("kernel", kernel);
+    return kernel;
+  };
+
+
+  /**
+   * appy sobel filter to image data
+   * @param {object} GrayImageData object
+   * @return {object} GrayImageData object
+   */
+
+  CannyJS.sobel = function(imgData) {
+    var copy, xFiler, yFiler;
+    yFiler = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]];
+    xFiler = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]];
+    copy = imgData.copy();
+    copy.fill(0);
+    imgData.eachPixel(3, function(x, y, current, neighbors) {
+      var ghs, gvs, i, j, _i, _j;
+      ghs = 0;
+      gvs = 0;
+      for (i = _i = 0; _i <= 2; i = ++_i) {
+        for (j = _j = 0; _j <= 2; j = ++_j) {
+          ghs += yFiler[i][j] * neighbors[i][j];
+          gvs += xFiler[i][j] * neighbors[i][j];
+        }
+      }
+      return copy.data[x][y] = Math.sqrt(ghs * ghs + gvs * gvs);
+    });
+    return copy;
+  };
+
+
+  /**
+   * appy non-maximum suppression to image data
+   * @param {object} GrayImageData object
+   * @return {object} GrayImageData object
+   */
+
+  CannyJS.nonMaximumSuppression = function(imgData) {
+    var copy = imgData.copy();
+    copy.fill(0);
+    imgData.eachPixel(3, function(x, y, c, n) {
+      if (n[1][1] > n[0][1] && n[1][1] > n[2][1]) {
+        copy.data[x][y] = n[1][1];
+      } else {
+        copy.data[x][y] = 0;
+      }
+      if (n[1][1] > n[0][2] && n[1][1] > n[2][0]) {
+        copy.data[x][y] = n[1][1];
+      } else {
+        copy.data[x][y] = 0;
+      }
+      if (n[1][1] > n[1][0] && n[1][1] > n[1][2]) {
+        copy.data[x][y] = n[1][1];
+      } else {
+        copy.data[x][y] = 0;
+      }
+      if (n[1][1] > n[0][0] && n[1][1] > n[2][2]) {
+        return copy.data[x][y] = n[1][1];
+      } else {
+        return copy.data[x][y] = 0;
+      }
+    });
+    return copy;
+  };
+
+
+  /**
+   * appy hysteresis threshold to image data
+   * @param {object} GrayImageData object
+   * @param {number} [ht=150] value of high threshold
+   * @param {number} [lt=100] value of low threshold
+   * @return {object} GrayImageData object
+   */
+
+  CannyJS.hysteresis = function(imgData, ht, lt) {
+    var copy, isCandidate, isStrong, isWeak, traverseEdge;
+    copy = imgData.copy();
+    isStrong = function(edge) {
+      return edge > ht;
+    };
+    isCandidate = function(edge) {
+      return edge <= ht && edge >= lt;
+    };
+    isWeak = function(edge) {
+      return edge < lt;
+    };
+    imgData.eachPixel(3, function(x, y, current, neighbors) {
+      if (isStrong(current)) {
+        return copy.data[x][y] = 255;
+      } else if (isWeak(current) || isCandidate(current)) {
+        return copy.data[x][y] = 0;
+      }
+    });
+    traverseEdge = function(x, y) {
+      var i, j, neighbors, _results;
+      if (x === 0 || y === 0 || x === imgData.width - 1 || y === imgData.height - 1) {
+        return;
+      }	
+      if (isStrong(copy.data[x][y])) {
+        neighbors = copy.getNeighbors(x, y, 3);
+        _results = [];
+        for (i = 0; i <= 2; i++) {
+          _results.push((function() {
+            var _results1;
+            _results1 = [];
+            for (j = 0; j <= 2; j++) {
+              if (isCandidate(neighbors[i][j])) {
+                copy.data[x - 1 + i][y - 1 + j] = 255;
+                _results1.push(traverseEdge(x - 1 + i, y - 1 + j));
+              } else {
+                _results1.push(void 0);
+              }
+            }
+            return _results1;
+          })());
+        }
+        return _results;
+      }
+    };
+    copy.eachPixel(3, function(x, y) {
+      return traverseEdge(x, y);
+    });
+    copy.eachPixel(1, function(x, y, current) {
+      if (!isStrong(current)) {
+        return copy.data[x][y] = 0;
+      }
+    });
+    return copy;
+  };
+
+
+  /**
+   * appy canny edge detection algorithm to canvas
+   * @param {object} canvas object
+   * @param {number} [ht=100] value of high threshold
+   * @param {number} [lt=50] value of low threshold
+   * @param {number} [sigmma=1.4] value of sigmma of gauss function
+   * @param {number} [size=3] size of the kernel (must be an odd number)
+   * @return {object} GrayImageData object
+   */
+
+  CannyJS.canny = function(canvas, ht, lt, sigmma, kernelSize) {
+    var blur, imgData, nms, sobel;
+    if (ht == null) { ht = 100; }
+    if (lt == null) { lt = 50;  }
+    if (sigmma == null) { sigmma = 1.4; }
+    if (kernelSize == null) { kernelSize = 3; }
+    imgData = new GrayImageData(canvas.width, canvas.height);
+    imgData.loadCanvas(canvas);
+    console.log("Canvas loading Done@!!!");
+    blur = imgData;
+    sobel = CannyJS.sobel(blur);
+    console.log("Sobel Done@!!!");
+    nms = CannyJS.nonMaximumSuppression(sobel);
+    console.log("NMS Done@!!!");
+    return CannyJS.hysteresis(nms, ht, lt);
+  };</pre>
+
+<h4>4) Test the App.</h4>
+
+<button class="btn btn-success" id="canny">Apply Canny Edge Detection</button>
+<canvas id="canvas" width="512" height="512"></canvas>  
+</div>
+ <div class="col-md-4">
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+<script src="../scripts/libs/fabric.min.js"></script>
+	<script src="../scripts/cannynew.js"></script>
+	<script src="../scripts/customfilters.js"></script>
+	<script type="text/javascript">
+	var canvas = new fabric.Canvas('canvas');
+	fabric.Image.fromURL('../images/cartoon.jpg', function (oImg) {
+		oImg.filters.push(
+				new fabric.Image.filters.CannyEdgeDetect);
+		canvas.add(oImg);
+	    canvas.centerObject(oImg);
+	    canvas.renderAll();
+	  }, {"scaleX": 1, "scaleY": 1});
+	
+	$("#canny").on("click", function () {
+		var objects = canvas.getObjects();
+		var cimg= objects[0];  
+		if(cimg.filters[2] == null) {
+			cimg.filters[2] = new fabric.Image.filters.CannyEdgeDetect;
+		}
+	    cimg.applyFilters(canvas.renderAll.bind(canvas));
+	});
+	</script>
+</html>

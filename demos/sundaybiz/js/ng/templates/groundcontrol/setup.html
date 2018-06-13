@@ -1,0 +1,190 @@
+<div class="container-fluid">
+      
+      <div class="row">
+        <div class="col-12">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" ng-click="retrieveData('class_types', 'ground_control')">
+    <a class="nav-link active show" data-toggle="tab" href="#classtypes" role="tab" aria-controls="home" aria-selected="false">Class Types</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('document_categories', 'ground_control')">
+    <a class="nav-link" data-toggle="tab" href="#documentcategories" role="tab" aria-controls="profile" aria-selected="false">Document Categories</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('locations', 'ground_control')">
+    <a class="nav-link" data-toggle="tab" href="#location" role="tab" aria-controls="Detection_Rating" aria-selected="false">Locations</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#disp" role="tab" aria-controls="Classification" aria-selected="false">Approval loops</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#manuf" role="tab" aria-controls="Company_Info" aria-selected="false">Revision Format</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#model" role="tab" aria-controls="sites" aria-selected="false">Email Lists</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#option" role="tab" aria-controls="Departments" aria-selected="false">Other</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pmfr" role="tab" aria-controls="Customers" aria-selected="false">Company Information</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('criticality', 'ground_control')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#critical" role="tab" aria-controls="parts" aria-selected="true">Criticality</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('departments', 'ground_control')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#depts" role="tab" aria-controls="FMEA" aria-selected="false">Departments</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('employee_types', 'ground_control')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#employeetypes" role="tab" aria-controls="FMEA" aria-selected="false">Employee Types</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('training_class_categories', 'ground_control')">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#trainingclasscat" role="tab" aria-controls="FMEA" aria-selected="false">Training Class Categories</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+ 
+
+  <div class="tab-pane fade active show" id="classtypes" role="tabpanel" aria-labelledby="home-tab">
+  
+<div id="clicentfor" class="height_155 scrollFy scrollWithFrm">
+  <button class="btn btn-faem" ng-click="addNewColumn('class_types', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('class_types', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('class_types', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('class_types', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Class Type</th>
+        <th>Description</th>
+        <th>Active</th>
+      </tr>
+    </thead>
+    <tbody id="class_types">
+    </tbody>
+  </table>
+</div>
+
+  </div>
+  <div class="tab-pane fade" id="documentcategories" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('document_categories', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('document_categories', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('document_categories', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('document_categories', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Document Category</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="document_categories">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('locations', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('locations', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('locations', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('locations', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Document Location</th>
+        <th>Location Description</th>
+      </tr>
+    </thead>
+    <tbody id="locations">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="critical" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('criticality', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('criticality', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('criticality', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('criticality', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Criticality</th>
+        <th>Description</th>
+        <th>Sort Order</th>
+        <th>t_Criticality.User</th>
+      </tr>
+    </thead>
+    <tbody id="criticality">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="depts" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('departments', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('departments', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('departments', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('departments', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Dept Number/Code</th>
+        <th>Department Name</th>
+        <th>Manager Name</th>
+        <th>Active?</th>
+      </tr>
+    </thead>
+    <tbody id="departments">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="employeetypes" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('employee_types', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('employee_types', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('employee_types', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('employee_types', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Employee Type</th>
+        <th>Class</th>
+      </tr>
+    </thead>
+    <tbody id="employee_types">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="trainingclasscat" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('training_class_categories', 'ground_control')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('training_class_categories', 'ground_control')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('training_class_categories', 'ground_control')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('training_class_categories', 'ground_control')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Active?</th>
+      </tr>
+    </thead>
+    <tbody id="training_class_categories">
+    </tbody>
+  </table>
+  </div>
+
+
+
+</div>
+</div>
+
+
+</div>
+
+        </div>
+      </div>

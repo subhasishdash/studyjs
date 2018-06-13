@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Write your first program in WebGL and GLSL</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+   <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8" id="content">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Write your first program in WebGL and GLSL</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 09th March 2016 at 9:00 PM</p>
+				<br/>
+              <h2>What will you need?</h2>
+              <ul>
+              	<li>A text editor.</li>
+              	<li>Basic JavaScript knowledge.</li>
+              	<li>Any web browser that supports WebGL.</li>
+              </ul>
+              <hr/>
+              
+              <h2>
+              Let's start build the first WebGL application.
+              </h2>
+              <br/>
+              First of all let's take a empty HTML page with a empty script file :
+<pre>&lt;html&gt;
+	&lt;head&gt;&lt;/head&gt;
+	&lt;body&gt;&lt;/body&gt;
+	&lt;script src="demo.js"&gt;&lt;/script&gt;
+&lt;/html&gt;	</pre>
+        	<br/>
+        	<h4>Now lets fill our script file(demo.js)</h4>
+        	The very first step in programming WebGL will be to get the canvas, and as we don't have that in our HTML page ,let's create one :
+        	<pre>var canvas = document.createElement('canvas');
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+document.body.appendChild(canvas);</pre>
+        	<br/>
+        	Now let's get the WebGL context:
+        	<pre>var gl = canvas.getContext('webgl');</pre>
+        		<br/>
+        		Now, lets fill the canvas with blue color :
+        		<pre>gl.clearColor(0.0, 0.0 , 1.0, 1.0); 
+gl.clear(gl.DEPTH_BUFFER_BIT|gl.COLOR_BUFFER_BIT)</pre>
+        		Now, if everything above is correct, we must get a blue screen as given below.
+        		<img class='img-rounded' src="../images/webgl/webgl1.PNG"/><hr/>
+        		
+        		Now, let's draw a triangle over this blue canvas. To do that we need to write vertex and fragment shaders. 
+        		So, let's write our vertex shader first :
+        		<pre>var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vertexShader, 
+[
+	'attribute vec3 triangle_position;',
+	'void main(void) {',
+		'gl_Position = vec4(triangle_position, 1.0);',
+	'}'
+].join('\n'));
+gl.compileShader(vertexShader);</pre>
+<br/>
+and then the fragment shader would be something like the below code:
+<pre>var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fragmentShader, 
+[
+	'precision highp float;',
+	'uniform vec4 triangle_color;',
+	'void main(void) {',
+		'gl_FragColor = triangle_color;',
+	'}'
+].join('\n'));
+gl.compileShader(fragmentShader);</pre>
+<br/>
+After writing the shaders, we need to create the program and attach the shaders to it, followed by linking the program to see if there are any errors in our shaders, then finally use the program.
+<pre>var program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+</pre>
+
+Now the program is ready to be shown ,lets declare the vertices where we need to render the triangle,
+<pre>var vertices = new Float32Array([-0.5, -0.5,
+		0.5, -0.5, 
+		0.0, 0.5]);</pre>
+Now, lets create a buffer data to send the vertices to GPU via GLSL
+<pre>var buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)</pre>
+Now, let's use our program :
+<pre>// If creating the shader program failed, alert
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+   alert("Unable to initialize the shader program.");
+} else {
+   //use the program
+   gl.useProgram(program);
+}</pre>
+Now, lets pass the data via uniforms and attributes.
+<pre>var triangleColor = gl.getUniformLocation(program, 'triangle_color');
+gl.uniform4fv(triangleColor, [1.0, 1.0, 0.0, 1.0]);
+var trianglePosition = gl.getAttribLocation(program, 'triangle_position');
+gl.enableVertexAttribArray(trianglePosition);
+gl.vertexAttribPointer(trianglePosition, 2, gl.FLOAT, gl.FALSE, 0,0);
+gl.drawArrays(gl.TRIANGLES, 0, 3);</pre>
+Now, if everything worked fine, we will be able to see a yellow triangle :
+<hr/>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">WebGL</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">09th March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    
+
+</body>
+<script type="text/javascript">
+var canvas = document.createElement('canvas');
+canvas.height = 512;
+canvas.width = 512;
+document.getElementById('content').appendChild(canvas);
+var gl = canvas.getContext('webgl');
+gl.clearColor(0.0, 0.0 , 1.0, 1.0); 
+gl.clear(gl.DEPTH_BUFFER_BIT|gl.COLOR_BUFFER_BIT);
+
+var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vertexShader, 
+[
+	'attribute vec3 triangle_position;',
+	'void main(void) {',
+		'gl_Position = vec4(triangle_position, 1.0);',
+	'}'
+].join('\n'));
+gl.compileShader(vertexShader);
+
+var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fragmentShader, 
+[
+	'precision highp float;',
+	'uniform vec4 triangle_color;',
+	'void main(void) {',
+		'gl_FragColor = triangle_color;',
+	'}'
+].join('\n'));
+gl.compileShader(fragmentShader);
+
+
+var program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+
+var vertices = new Float32Array([-0.5, -0.5,
+                         		0.5, -0.5, 
+                         		0.0, 0.5]);
+                         		
+var buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+//If creating the shader program failed, alert
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+   alert("Unable to initialize the shader program.");
+} else {
+   //use the program
+   gl.useProgram(program);
+}
+var triangleColor = gl.getUniformLocation(program, 'triangle_color');
+gl.uniform4fv(triangleColor, [1.0, 1.0, 0.0, 1.0]);
+var trianglePosition = gl.getAttribLocation(program, 'triangle_position');
+gl.enableVertexAttribArray(trianglePosition);
+gl.vertexAttribPointer(trianglePosition, 2, gl.FLOAT, gl.FALSE, 0,0);
+gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+</script>
+</html>

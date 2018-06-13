@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>One to One Video Calling in WebRTC</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../scripts/libs/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script type="text/javascript" src="../scripts/video.js"></script>
+  <script>
+  var ind_q = 'javascript, node.js';
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74915430-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+<header class="navbar navbar-bright navbar-fixed-top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="http://www.studyjs.com" class="navbar-brand">StudyJS</a>
+    </div>
+    <nav class="collapse navbar-collapse" role="navigation">
+      <ul class="nav navbar-right navbar-nav">
+        <li class="dropdown">
+          <ul class="dropdown-menu" style="padding:12px;">
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    
+    <div class="col-md-12"> 
+      
+      <div class="panel">
+        <div class="panel-body">
+          
+          
+          
+          <!--/stories-->
+          <div class="row">    
+            <br>
+            <div class="col-md-10 col-sm-9">
+              <h3><a href="videocall.html"><u>One to One Video Calling in WebRTC</u></a></h3>
+              <br/>
+              <div id="video-container">
+	<video id="their-video" autoplay class="their-video"></video>
+	<video id="my-video" muted="true" autoplay class="my-video"></video>
+</div>
+              <div id="step1">
+		<p></p>
+		<div id="step1-error">
+		</div>
+	</div>
+
+<!--Make calls to others-->
+<div id="step2">
+	<p>Your id: <span id="my-id">...</span></p>
+	<p>Share this id with others so they can call you.</p>
+	<p><span id="subhead">Make a call</span><br>
+		<input type="text" placeholder="Call user id..." id="callto-id">
+		<a href="#" id="make-call">Call</a>
+	</p>
+</div>
+
+<!--Call in progress-->
+<div id="step3">
+	<p>Currently in call with <span id="their-id">...</span></p>
+	<p><a href="#" id="end-call">End call</a></p>
+</div>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">WebRTC</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">31st March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+                                                                                       
+	                                                
+                                                      
+   	</div><!--/col-12-->
+  </div>
+</div>
+                                                
+                                                                                
+<hr>
+
+<div class="container" id="footer">
+   <div class="row">
+    <div class="col col-sm-12">
+      
+      <h1>Follow Us</h1>
+      <div class="btn-group">
+       <a class="btn btn-twitter btn-lg" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a>
+	   <a class="btn btn-facebook btn-lg" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a>
+<!-- 	   <a class="btn btn-google-plus btn-lg" href="#"><i class="icon-google-plus icon-large"></i> Google+</a> -->
+      </div>
+      
+    </div>
+  </div>
+  <iframe src="../jobs.html" width="400" height="300" style="border:none;"></iframe>
+</div>
+	<!-- script references -->
+	<script type="text/javascript">
+	</script>
+	</body>
+</html>

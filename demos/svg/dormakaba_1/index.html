@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dicos Viewer</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+</head>
+<body>
+<input type="file" id="filehandle"/>
+<div class="container-fluid">
+	<button class="btn btn-primary" id="invert">Invert</button>
+	<button class="btn btn-primary" id="crystalClear">Adaptive Histogram</button>
+	<button class="btn btn-primary" id="unsharpMask">Unsharp Mask</button>
+	<button class="btn btn-primary" id="smoothing">Smoothing</button>
+	<button class="btn btn-primary" id="edgeEnhancement">Edge Enhancement</button>
+	<button class="btn btn-primary" id="edgeDetection">Edge Detection</button>
+	<button class="btn btn-primary" id="pan">Pan</button>
+	<button class="btn btn-primary" id="zoom">Zoom</button>
+	<div id="mycanvas">
+	<canvas id="fabricCanvas"></canvas>	
+	</div>
+	
+</div>
+<script type="text/javascript">
+	var ele = document.getElementById('fabricCanvas');
+	ele.width = window.innerWidth;
+	ele.height = window.innerHeight*0.80;
+	
+	
+	var canvasAttrs = null;
+var fileHandle = document.getElementById('filehandle');
+fileHandle.onchange = function (evt) {
+	var tgt = evt.target || window.event.srcElement;
+	var files = tgt.files;
+	// FileReader support
+	if (FileReader && files && files.length) {
+		var fr = new FileReader();
+		var extension = files[0].name.split('.').pop().toLowerCase();
+		//if extension is not dcm ,then stop processing further and exit.
+			//parse and process the Dicom file.
+			fr.onload = function(e) {
+				var obj = {
+					imageData : e.target.result,
+					width : 0,
+ 					height : 0
+				};
+				// Create a new image.
+    			var img = new Image();
+			    // Set the img src property using the data URL.
+			    img.src = fr.result;
+			    img.onload = function () {
+			    	var canvas = document.createElement('canvas');
+				    canvas.width=img.width; canvas.height=img.height;
+				    var ctx = canvas.getContext('2d');
+				    ctx.drawImage(img, 0, 0);
+				    var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+				    var data = imgData.data;
+				    obj.imageData = new Uint8Array(data.byteLength/4);
+				    obj.width = canvas.width;
+				    obj.height = canvas.height;
+
+				    for (var i = 0, j = 0; i < data.byteLength; i=i+4) {
+				    	var brightness = 0.34 * data[i] + 0.5 * data[i + 1] + 0.16 * data[i + 2];
+				    	data[i] = data[i+1] = data[i+2] = brightness;
+				    	obj.imageData[j++] = brightness;
+				    }
+				    ctx.putImageData(imgData, 0, 0);
+				 	newlib.init('fabricCanvas', obj);   
+				 	newlib.process([]);
+			    }
+			}
+			fr.readAsDataURL(this.files[0]);
+	}
+}
+
+var imgPrcBtns = {
+	edgeDetection : 'kernels.edgeDetection',
+	edgeEnhancement : 'kernels.edgeEnhancement',
+	invert : 'invert',
+	smoothing : 'kernels.smoothing',
+	unsharpMask : 'unsharpMask',
+	crystalClear : 'crystalClear'
+};
+
+//add btn handlers 
+Object.keys(imgPrcBtns)
+  .forEach(function eachKey(key) { 
+  	var value = imgPrcBtns[key];
+  	var ele = document.getElementById(key);
+	ele.onclick = function () {
+		newlib.process([value], 'imgPrc');
+	}
+});
+
+var pan = document.getElementById('pan');
+pan.onclick = function() {
+	newlib.process('pan', 'tools');
+}
+
+var zoom = document.getElementById('zoom');
+zoom.onclick = function() {
+	newlib.process('zoom', 'tools', {
+		elementToLookFor : 'mycanvas'
+	});
+}
+</script>
+<script type="text/javascript" src="_bundle.js"></script>
+</body>
+</html>

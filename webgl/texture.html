@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : How to render a texture in WebGL?</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+   <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../scripts/libs/utils.js"></script>
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>How to render a texture in WebGL?</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 17th March 2016 at 9:00 PM</p>
+				<br/>
+             There are two ways to render a image to canvas ,
+              <ul class="list-group">
+              	<li class="list-group-item">1)Using 2d context </li>
+              	<li class="list-group-item">2)Using a WebGL context</li>
+              </ul>
+              <br/>
+              We have another post on how to render a image using Canvas 2d API <u><a href="http://www.studyjs.com/canvas/image.html">here.</a></u>
+              <br/>
+              In this post , we will see how to render a image(called as texture) in WebGL.
+              For rendering a texture in WebGL, we will need the following things :
+              <ul class="list-group">
+              	<li class="list-group-item">1)Vertex Shader</li>
+              	<li class="list-group-item">2)Fragment Shader</li>
+              	<li class="list-group-item">3)Canvas - where the image will be rendered.</li>
+              	<li class="list-group-item">4)Image - image that will be rendered to canvas using WebGL</li>
+              </ul>
+              <br/>
+              <strong>1)Vertex Shader</strong>
+              <br/>
+              <pre>attribute vec3 attrVertexPos;
+attribute vec2 attrTextureCoord;
+varying highp vec2 vTextureCoord;
+void main(void) {
+	gl_Position = vec4(attrVertexPos);
+	//assigning texture coordinates
+	vTextureCoord = attrTextureCoord;
+}</pre>
+<br/>
+<strong>2)Fragment Shader</strong>
+<br/>
+<pre>#ifdef GL_ES
+precision highp float;
+#endif
+varying highp vec2 vTextureCoord;
+uniform texture2D uImage;
+void main(void) {
+	gl_FragColor = texture2D(uImage, vTextureCoord);
+}</pre>
+
+<br/>
+Now let us bind these shaders within JavaScript code .Please note that I have separated some cosmetic code that will be used for all webgl applications to a new file that you can find below as <u>utils.js</u>:
+<pre>//Create a canvas and append it to the body
+var canvas = document.createElement('canvas');
+canvas.width = 512;
+canvas.height = 512;
+document.body.appendChild(canvas);
+var gl = getWebGLContext(canvas);
+gl.viewport(0, 0, canvas.width, canvas.height);
+//create and compile Vertex Shader
+var vertexShader = createVertexShader([
+      	'attribute vec3 attrVertexPos;',
+      	'attribute vec2 attrTextureCoord;',
+      	'varying highp vec2 vTextureCoord;',
+      	'void main(void) {',
+      		'gl_Position = vec4(attrVertexPos, 1.0);',
+      		'vTextureCoord = attrTextureCoord;',
+      	'}'
+      ].join('\n'));
+//create and compile Fragment Shader
+var fragmentShader = createFragmentShader([
+	'#ifdef GL_ES',
+	'precision highp float;',
+	'#endif',
+       	'varying highp vec2 vTextureCoord;',
+       	'uniform sampler2D uImage;',
+       	'void main(void) {',
+       		'gl_FragColor = texture2D(uImage, vTextureCoord);',
+       	'}'
+       ].join('\n'));
+//Create,link and use the program.
+var program = createAndLinkPrograms(vertexShader, fragmentShader);
+
+//get glsl attributes 
+var glsl_aVertexPosition = gl.getAttribLocation(program, 'attrVertexPos');
+gl.enableVertexAttribArray(glsl_aVertexPosition);
+var glsl_aTextureCoord = gl.getAttribLocation(program, 'attrTextureCoord');
+gl.enableVertexAttribArray(glsl_aTextureCoord);
+
+//create vertex and indices coordinates
+var vertices = new Float32Array([ -0.8, -0.8,  0.0,  0.8, -0.8,  0.0, 0.8,  0.8, 0.0, -0.8,  0.8,  0.0]);
+var textureCoordinates = new Float32Array([ 0.0,  0.0, 1.0,  0.0, 1.0,  1.0,  0.0,  1.0]);
+var indices = new Uint16Array([ 0,  1,  2,  0,  2,  3]);
+
+//bind the buffers
+var vertexBuffer = createAndBindBuffer(vertices, gl.ARRAY_BUFFER);
+var textureCoordBuffer = createAndBindBuffer(textureCoordinates, gl.ARRAY_BUFFER)
+var indicesBuffer = createAndBindBuffer(indices, gl.ELEMENT_ARRAY_BUFFER);
+
+var image = new Image();
+//create a texture
+var texture = gl.createTexture();  
+image.onload = function() {
+//after the image is loaded ,we will render the texture to canvas.
+	  gl.bindTexture(gl.TEXTURE_2D, texture);
+	  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+	  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+	  
+	  allowAllImageSizes();
+	  gl.clearColor(0.0,0.0,0.0,1.0);
+	  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	  
+	  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+	  gl.vertexAttribPointer(glsl_aVertexPosition, 3, gl.FLOAT, gl.FALSE, 0, 0);
+	  
+	  gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+	  gl.vertexAttribPointer(glsl_aTextureCoord, 2, gl.FLOAT, gl.FALSE, 0, 0);
+	  
+	  gl.activeTexture(gl.TEXTURE0);
+	  gl.bindTexture(gl.TEXTURE_2D, texture);
+	  gl.generateMipmap(gl.TEXTURE_2D);
+	  gl.uniform1i(gl.getUniformLocation(program, "uImage"), 0);
+	  
+	  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+	  gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+}
+image.src = '../images/webgl/lena30.jpg';
+</pre>
+<br/> We will be creating a utility file to focus on the core rendering part. Let's name it utils.js
+<pre>utils.js
+---------
+var getWebGLContext = function(canvas) {
+	var webglContextParams = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
+	var webglContext = null;
+	for (var index = 0; index &lt; webglContextParams.length; index++) {
+		try {
+			webglContext = canvas.getContext(webglContextParams[index]);
+			if(webglContext) {
+				//breaking as we got our context
+				break;
+			}
+		} catch (E) {
+			console.log(E);
+		}
+	}
+	if(webglContext === null) {
+		alert('WebGL is not supported on your browser.');
+	} else {
+		//WebGL is supported in your browser, lets render the texture
+	}
+	return webglContext;
+}
+var createVertexShader = function (vertexShaderSource) {
+	console.log(vertexShaderSource);
+	var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(vertexShader, vertexShaderSource);
+	gl.compileShader(vertexShader);
+	return vertexShader;
+}
+
+var createFragmentShader = function (fragmentShaderSource) {
+	console.log(fragmentShaderSource);
+	var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(fragmentShader, fragmentShaderSource);
+	gl.compileShader(fragmentShader);
+	return fragmentShader;
+}
+
+
+var createAndLinkPrograms = function (vertexShader, fragmentShader) {
+	var program = gl.createProgram();
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragmentShader);
+	gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        alert('Could not initialise shaders');
+    }
+	gl.useProgram(program);
+	return program;
+}
+
+var createAndBindBuffer = function (verticesOrIndices, bufferType) {
+	var buffer = gl.createBuffer();
+	gl.bindBuffer(bufferType, buffer);
+	gl.bufferData(bufferType, verticesOrIndices, gl.STATIC_DRAW);
+	//clear memory
+	gl.bindBuffer(bufferType, null);
+	return buffer;
+}
+
+var allowAllImageSizes = function() {
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	  gl.bindTexture(gl.TEXTURE_2D, null);
+} </pre>
+<br/>
+As you can see below ,we have rendered a texture in WebGL.<br/><br/>
+<canvas id="canvas"></canvas>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">WebGL</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">17th March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    
+
+</body>
+<script type="text/javascript">
+	//Create a canvas and append it to the body
+	var canvas = document.getElementById('canvas');
+	canvas.width = 512;
+	canvas.height = 512;
+	var gl = getWebGLContext(canvas);
+	gl.viewport(0, 0, canvas.width, canvas.height);
+	//create and compile Vertex Shader
+	var vertexShader = createVertexShader([
+	      	'attribute vec3 attrVertexPos;',
+	      	'attribute vec2 attrTextureCoord;',
+	      	'varying highp vec2 vTextureCoord;',
+	      	'void main(void) {',
+	      		'gl_Position = vec4(attrVertexPos, 1.0);',
+	      		'vTextureCoord = attrTextureCoord;',
+	      	'}'
+	      ].join('\n'));
+	//create and compile Fragment Shader
+	var fragmentShader = createFragmentShader([
+		'#ifdef GL_ES',
+		'precision highp float;',
+		'#endif',
+	       	'varying highp vec2 vTextureCoord;',
+	       	'uniform sampler2D uImage;',
+	       	'void main(void) {',
+	       		'gl_FragColor = texture2D(uImage, vTextureCoord);',
+	       	'}'
+	       ].join('\n'));
+	//Create,link and use the program.
+	var program = createAndLinkPrograms(vertexShader, fragmentShader);
+
+	//get glsl attributes 
+	var glsl_aVertexPosition = gl.getAttribLocation(program, 'attrVertexPos');
+	gl.enableVertexAttribArray(glsl_aVertexPosition);
+	var glsl_aTextureCoord = gl.getAttribLocation(program, 'attrTextureCoord');
+	gl.enableVertexAttribArray(glsl_aTextureCoord);
+
+	//create vertex and indices coordinates
+	var vertices = new Float32Array([ -0.8, -0.8,  0.0,  0.8, -0.8,  0.0, 0.8,  0.8, 0.0, -0.8,  0.8,  0.0]);
+	var textureCoordinates = new Float32Array([ 0.0,  0.0, 1.0,  0.0, 1.0,  1.0,  0.0,  1.0]);
+	var indices = new Uint16Array([ 0,  1,  2,  0,  2,  3]);
+
+	//bind the buffers
+	var vertexBuffer = createAndBindBuffer(vertices, gl.ARRAY_BUFFER);
+	var textureCoordBuffer = createAndBindBuffer(textureCoordinates, gl.ARRAY_BUFFER)
+	var indicesBuffer = createAndBindBuffer(indices, gl.ELEMENT_ARRAY_BUFFER);
+
+	var image = new Image();
+	//create a texture
+	var texture = gl.createTexture();  
+	image.onload = function() {
+	//after the image is loaded ,we will render the texture to canvas.
+		  gl.bindTexture(gl.TEXTURE_2D, texture);
+		  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+		  
+		  allowAllImageSizes();
+		  gl.clearColor(0.0,0.0,0.0,1.0);
+		  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		  
+		  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+		  gl.vertexAttribPointer(glsl_aVertexPosition, 3, gl.FLOAT, gl.FALSE, 0, 0);
+		  
+		  gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+		  gl.vertexAttribPointer(glsl_aTextureCoord, 2, gl.FLOAT, gl.FALSE, 0, 0);
+		  
+		  gl.activeTexture(gl.TEXTURE0);
+		  gl.bindTexture(gl.TEXTURE_2D, texture);
+		  gl.generateMipmap(gl.TEXTURE_2D);
+		  gl.uniform1i(gl.getUniformLocation(program, "uImage"), 0);
+		  
+		  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+		  gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+	}
+	image.src = '../images/webgl/lena30.jpg';
+	</script>
+</html>

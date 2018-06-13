@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Adding water mark to a image in JQuery</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+   <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+  <script src="../scripts/libs/watermark.jquery.js"></script>
+  <script type="text/javascript">
+showWatermark = function(imgUrl) {
+	
+	imgUR = imgUrl;
+		if (screen.height < 700)
+			$("#cWater").css("display", "none");
+		else
+			$("#cWater").css("display", "block");
+		$("#waterid").attr("src", "");
+		$("#waterid").attr("src", imgUrl);
+		$("#cWater").css("z-index", "99999");
+		$("#waterid").attr("width", "");
+		$("#waterid").attr("height", "");
+		if (window.location.toString().indexOf("cWater") == -1)
+			window.location = window.location + "#cWater";
+		else
+			window.location = window.location;
+		if (screen.height < 700) {
+			ccc = setInterval(
+					"if($(\"#waterid\").attr(\"src\").toString() != imgUR) {$(\"#waterid\").attr(\"width\" , screen.width);$(\"#waterid\").attr(\"height\" , screen.height); $(\"#cWater\").css(\"display\",\"block\"); clearInterval(ccc); window.scrollTo(0 , 100);}",
+					"1");
+		}
+		$('.watermark').watermark({
+			"path" : "../images/jquery/paintcp.png"
+		});
+	}
+	hideWatermark = function () {
+		$("#cWater").hide(400);
+	}
+</script>
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Adding water mark to a image in JQuery</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 13th March 2016 at 9:00 PM</p>
+
+             <br/>
+              Let us assume that you are a wild life photographer and you clicked some pictures and you shared the pictures online in social media, 
+              <br/>then how can you protect the ownership of that picture clicked with lot of efforts.
+             <br/>Well , I have got something for you here, where you can add a watermark to your clicked pictures.
+             
+             <br/><br/>
+             Our flow would be very simple :
+             <ul>
+             	<li>First of all, We will go to Windows paint to create a watermark</li>
+             	<li>After that ,we will download watermark.jquery plugin file from http://www.patrick-wied.at/static/watermarkjs/jq/watermark.jquery.zip</li>
+             	<li>Modify watermark.jquery.js to suit our needs </li>
+             	<li>We will render the image with watermark with a small function written in JQuery </li>
+             </ul>
+             <br/>
+             Let's create a dummy copyright by studyjs.com
+             <img class='img-rounded' src="../images/jquery/paint.PNG"/><hr/>
+             Now let's download the watermark.jquery plugin by going to http://www.patrick-wied.at/static/watermarkjs/jq/
+             <br/>
+             As I want to render the watermark on bottom middle of any image , I will modify watermark.jquery.js as follows:
+             <pre>/*
+ *	watermark.js jQuery plugin
+ *	Watermarked images with javascript and htmlcanvas	
+ *
+ *	author: Patrick Wied ( http://www.patrick-wied.at )
+ *	version: 1.0
+ *	license: MIT - feel free to use, modify, redistribute
+ *	http://letmein.at/software/how-to-correctly-use-code-you-didnt-write/
+ */
+var imgUR = "";
+(function($){
+	$.fn.watermark = function(cfg){
+		var doc = this,
+		gcanvas = {},
+		gctx = {},
+		imgQueue = [],
+		className = "watermark",
+		watermark = false,
+		watermarkPosition = "bottom-right",
+		watermarkPath = "watermark.png?"+(+(new Date())),
+		opacity = (255/(100/50)), // 50%
+		initCanvas = function(){
+			gcanvas = $('&lt;canvas style="display:none"&gt;&lt;/canvas&gt;');
+			gctx = gcanvas[0].getContext("2d");
+			$('body').append(gcanvas);
+		},
+		initWatermark = function(){
+			watermark = $('&lt;img src="'+watermarkPath+'" /&gt;');
+
+			if(opacity != 255){
+				if(!watermark[0].complete)
+					watermark[0].onload = function(){	
+					applyTransparency();
+				};
+				else
+					applyTransparency();
+
+
+			}else{
+				applyWatermarks();
+			}
+
+		},
+		// function for applying transparency to the watermark
+		applyTransparency = function(){
+			var w = watermark[0].width || watermark[0].offsetWidth,
+			h = watermark[0].height || watermark[0].offsetHeight;
+
+			setCanvasSize(w, h);
+			gctx.drawImage(watermark[0], 0, 0);
+
+			var image = gctx.getImageData(0, 0, w, h);
+			var imageData = image.data,
+			length = imageData.length;
+			for(var i=3; i < length; i+=4){  
+				imageData[i] = (imageData[i]&lt;opacity)?imageData[i]:opacity;
+			}
+			image.data = imageData;
+			gctx.putImageData(image, 0, 0);
+			watermark[0].onload = null;
+			watermark.attr("src", "");
+			watermark.attr("src", gcanvas[0].toDataURL());
+			// assign img attributes to the transparent watermark
+			// because browsers recalculation doesn't work as fast as needed
+			watermark.width(w);
+			watermark.height(h);
+
+			applyWatermarks();
+		},
+		configure = function(config){
+			if(config){
+
+				if(config["watermark"])
+					watermark = config["watermark"];
+				if(config["path"])
+					watermarkPath = config["path"];
+				if(config["position"])
+					watermarkPosition = config["position"];
+				if(config["opacity"])
+					opacity = (255/(100/config["opacity"]));
+				if(config["className"])
+					className = config["className"];
+
+			}
+
+			initCanvas();
+			initWatermark();
+		}
+		setCanvasSize = function(w, h){
+			gcanvas[0].width = w;
+			gcanvas[0].height = h;
+		},
+		applyWatermark = function(img){
+
+			setCanvasSize(img[0].width || img[0].offsetWidth, img[0].height || img[0].offsetHeight);
+			try{
+				gctx.drawImage(img[0], 0, 0);
+			}catch(E){}
+
+			var position = watermarkPosition,
+			x = 0,
+			y = 0;
+			y = gcanvas.height()-watermark.height()-5;
+
+			x = (gcanvas.width()-watermark.width())/2;
+			try{
+				gctx.drawImage(watermark[0], x, y);
+			}catch(E){}
+			img[0].onload = null;
+
+			img.attr("src", gcanvas[0].toDataURL());
+		},
+		applyWatermarks = function(){
+			setTimeout(function(){
+				var els = $('.'+className);
+				els.each(function(){
+
+					var img = $(this);
+					if(img[0].tagName.toUpperCase() != "IMG")
+						return;
+
+
+					if(!img[0].complete){
+
+						img[0].onload = function(){
+							applyWatermark(img);
+						};
+					}else{
+						applyWatermark(img);
+					}
+				});
+			},10);
+		};
+		configure(cfg);
+	};
+	$('.watermarkyu').watermark({});
+})(jQuery);</pre>
+
+<br/><br/>
+Finally, let's write a function to render watermark on image on a img tag.
+<pre>showWatermark = function(imgUrl) {
+	
+	imgUR = imgUrl;
+		if (screen.height < 700)
+			$("#cWater").css("display", "none");
+		else
+			$("#cWater").css("display", "block");
+		$("#waterid").attr("src", "");
+		$("#waterid").attr("src", imgUrl);
+		$("#cWater").css("z-index", "99999");
+		$("#waterid").attr("width", "");
+		$("#waterid").attr("height", "");
+		if (window.location.toString().indexOf("cWater") == -1)
+			window.location = window.location + "#cWater";
+		else
+			window.location = window.location;
+		if (screen.height < 700) {
+			ccc = setInterval(
+					"if($(\"#waterid\").attr(\"src\").toString() != imgUR) {$(\"#waterid\").attr(\"width\" , screen.width);$(\"#waterid\").attr(\"height\" , screen.height); $(\"#cWater\").css(\"display\",\"block\"); clearInterval(ccc); window.scrollTo(0 , 100);}",
+					"1");
+		}
+		$('.watermark').watermark({
+			"path" : "images/jquery.paintcp.png"
+		});
+	}
+	
+And the html tag will be :
+&lt;div id="cWater" style="display:none;"&gt;&lt;img id="waterid" class="watermark" src="" style="cursor:pointer;z-index: 99999" onclick="hideWatermark();"&gt;&lt;/div&gt;
+	</pre>
+	<div id="cWater" style="display:none;"><img id="waterid" class="watermark" src="" style="cursor:pointer;z-index: 99999" onclick="hideWatermark();"></div>
+	<button class="btn btn-success" onclick="showWatermark('../images/fabricjs/dog.jpg');">Click me to see watermark image on a dog</button>
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Jquery</span> &nbsp; <span class="label label-default">watermark.jquery</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">13th March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    
+
+</body>
+
+</html>

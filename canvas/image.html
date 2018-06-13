@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Maintain aspect ratio of the image in html5 canvas</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Maintain aspect ratio of the image in html5 canvas</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 15th March 2016 at 9:00 PM</p>
+
+                <hr>
+              Let us consider a scenario where we have to
+              render a image in the center of the screen with the perfect aspect ratio.
+              <br/>To start, 
+              let us create a canvas which is 300 in width and 200 in height.
+              <br/>
+              <pre>var canvas = document.createElement('canvas');
+canvas.width = 300;
+canvas.height = 200;
+document.body.appendChild(canvas);</pre>
+
+Now let us render a image to occupy full canvas without caring about maintaining the aspect ratio.
+<pre>var context = canvas.getContext('2d');
+var image = new Image();
+
+image.onload = function () {
+	context.drawImage(image, 0, 0, canvas.width, canvas.height);
+}
+
+image.src = '../images/cartoon.jpg';
+</pre>
+
+<canvas id="canvas" width=300 height=200></canvas>
+
+<br/>
+As you can see the image which is shown without handling aspect ratio.
+Let us write a function to maintain aspect ratio.
+<pre>var calculateAspectRatio = function (image) {
+	var imageAspectRatio = image.width / image.height;
+	var canvasAspectRatio = canvas.width / canvas.height;
+	var renderableHeight, renderableWidth, xStart, yStart;
+	var AspectRatio = new Object();
+	// If image's aspect ratio is less than canvas's we fit on height
+	// and place the image centrally along width
+	if(imageAspectRatio &lt; canvasAspectRatio) {
+		renderableHeight = canvas.height ;
+		renderableWidth = image.width * (renderableHeight / image.height);
+		xStart = (canvas.width - renderableWidth) / 2;
+		yStart = 0;
+	}
+
+	// If image's aspect ratio is greater than canvas's we fit on width
+	// and place the image centrally along height
+	else if(imageAspectRatio &gt; canvasAspectRatio) {
+		renderableWidth = canvas.width;
+		renderableHeight = image.height * (renderableWidth / image.width);
+		xStart = 0;
+		yStart = ( canvas.width  - renderableHeight) / 2;
+	}
+
+	//keep aspect ratio
+	else {
+		renderableHeight =  canvas.height ;
+		renderableWidth = canvas.width;
+		xStart = 0;
+		yStart = 0;
+	}
+	AspectRatio.renderableHeight = renderableHeight;
+	AspectRatio.renderableWidth = renderableWidth;
+	AspectRatio.startX = xStart;
+	AspectRatio.startY = yStart;
+	return AspectRatio;
+}</pre>
+
+<br/>
+Now let us draw the image again onto the canvas using aspect ratio:
+<br/>
+<pre>var canvas_AR = document.createElement('canvas');
+canvas_AR.width = 300;
+canvas_AR.height = 200;
+document.body.appendChild(canvas_AR);
+var context_AR = canvas_AR.getContext('2d');
+
+var image_AR = new Image();
+image_AR.onload = function () {
+var AR = calculateAspectRatio(image);
+	context_AR.drawImage(image_AR, AR.startX, AR.startY, AR.renderableWidth, AR.renderableHeight);
+}
+
+image_AR.src = '../images/cartoon.jpg';</pre>
+<canvas id="canvas_AR" width=300 height=200></canvas>
+<br/>
+As you can see above ,we are able to render the image in the center of the canvas by maintaining correct aspect ratio.
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Html5 Canvas</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">15th March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+<script type="text/javascript">
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	var image = new Image();
+	image.onload = function () {
+		context.drawImage(image, 0, 0, canvas.width, canvas.height);
+	}
+	image.src = '../images/cartoon.jpg';
+	var calculateAspectRatio = function (image) {
+		var imageAspectRatio = image.width / image.height;
+		var canvasAspectRatio = canvas.width / canvas.height;
+		var renderableHeight, renderableWidth, xStart, yStart;
+		var AspectRatio = new Object();
+		// If image's aspect ratio is less than canvas's we fit on height
+		// and place the image centrally along width
+		if(imageAspectRatio < canvasAspectRatio) {
+			renderableHeight = canvas.height ;
+			renderableWidth = image.width * (renderableHeight / image.height);
+			xStart = (canvas.width - renderableWidth) / 2;
+			yStart = 0;
+		}
+
+		// If image's aspect ratio is greater than canvas's we fit on width
+		// and place the image centrally along height
+		else if(imageAspectRatio > canvasAspectRatio) {
+			renderableWidth = canvas.width;
+			renderableHeight = image.height * (renderableWidth / image.width);
+			xStart = 0;
+			yStart = ( canvas.width  - renderableHeight) / 2;
+		}
+
+		//keep aspect ratio
+		else {
+			renderableHeight =  canvas.height ;
+			renderableWidth = canvas.width;
+			xStart = 0;
+			yStart = 0;
+		}
+		AspectRatio.renderableHeight = renderableHeight;
+		AspectRatio.renderableWidth = renderableWidth;
+		AspectRatio.startX = xStart;
+		AspectRatio.startY = yStart;
+		return AspectRatio;
+	}
+	var canvas_AR = document.getElementById('canvas_AR');
+	var context_AR = canvas_AR.getContext('2d');
+	var image_AR = new Image();
+	image_AR.onload = function () {
+		var AR = calculateAspectRatio(image);
+		context_AR.drawImage(image_AR, AR.startX, AR.startY, AR.renderableWidth, AR.renderableHeight);
+	}
+	image_AR.src = '../images/cartoon.jpg';
+	</script>
+</html>

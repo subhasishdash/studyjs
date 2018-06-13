@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Change x/y positions of WebGL objects using vertex shaders</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+   <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Change x/y positions of WebGL objects using vertex shaders</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 13th Nov 2016 at 7:00 PM</p>
+				<br/>
+				In this tutorial, we will be showing you how to build a simple example in WebGL that will help us in navigating the X/Y coordinates.
+				We will use the following :
+				 <ul class="list-group">
+<li class="list-group-item">JavaScript</li>
+<li class="list-group-item">A canvas</li>
+<li class="list-group-item">Vertex Shader</li>
+<li class="list-group-item">Fragment Shader</li>
+<li class="list-group-item">2 input ranges for X and Y range</li>
+</ul> 
+<br/>
+              <h3><u>Our HTML file will look like this : </u></h3>
+              <br/>
+              <pre>&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;This will change object positions using xyz sliders&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		X-AXIS: &lt;input type="range" id="x" value="0"/&gt;<br/>
+		Y-AXIS: &lt;input type="range" id="y" value="0"/&gt;<br/>
+	&lt;/body>
+	&lt;script type="text/javascript" src="utils.js"&gt;&lt;/script&gt;
+	&lt;script type="text/javascript" src="events.js"&gt;&lt;/script&gt;
+	&lt;script type="text/javascript" src="index.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</pre>
+
+Now, lets write utils.js , events.js and index.js,
+ where utils.js is a small library that will help us to minimize our WebGL code, events.js is for the input range events and index.js is for rendering to canvas using WebGL.
+ So, let's code :
+ 
+ <h3><u>utils.js :</u></h3>
+ <pre>
+ var getWebGLContext = function(canvas) {
+	var webglContextParams = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
+	var webglContext = null;
+	for (var index = 0; index < webglContextParams.length; index++) {
+		try {
+			webglContext = canvas.getContext(webglContextParams[index]);
+			if(webglContext) {
+				//breaking as we got our context
+				break;
+			}
+		} catch (E) {
+			console.log(E);
+		}
+	}
+	if(webglContext === null) {
+		alert('WebGL is not supported on your browser.');
+	} else {
+		//WebGL is supported in your browser, lets render the texture
+	}
+	return webglContext;
+}
+var createVertexShader = function (vertexShaderSource) {
+	console.log(vertexShaderSource);
+	var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+	gl.shaderSource(vertexShader, vertexShaderSource);
+	gl.compileShader(vertexShader);
+	return vertexShader;
+}
+
+var createFragmentShader = function (fragmentShaderSource) {
+	console.log(fragmentShaderSource);
+	var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+	gl.shaderSource(fragmentShader, fragmentShaderSource);
+	gl.compileShader(fragmentShader);
+	return fragmentShader;
+}
+
+
+var createAndLinkPrograms = function (vertexShader, fragmentShader) {
+	var program = gl.createProgram();
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragmentShader);
+	gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        alert('Could not initialise shaders');
+    }
+	gl.useProgram(program);
+	return program;
+}
+
+var createAndBindBuffer = function (verticesOrIndices, bufferType) {
+	var buffer = gl.createBuffer();
+	gl.bindBuffer(bufferType, buffer);
+	gl.bufferData(bufferType, verticesOrIndices, gl.STATIC_DRAW);
+	return buffer;
+}
+
+var allowAllImageSizes = function() {
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	  gl.bindTexture(gl.TEXTURE_2D, null);
+} 
+ </pre>
+ 
+ <h3><u>events.js :</u></h3>
+ <pre>
+ var x1 = -0.5, x2 = 0.5, x3 = 0.0, y1 = -0.5, y2 = -0.5, y3 = 0.5;
+var lastX = 0, lastY = 0;
+
+var x = document.getElementById('x');
+var y = document.getElementById('y');
+x.oninput = function () {
+	if (this.value &gt; lastX) {
+		x1 += 0.01; x2 += 0.01; x3 += 0.01;
+	} else if (this.value &lt; lastX) {
+		x1 -= 0.01; x2 -= 0.01; x3 -= 0.01;
+	} 
+	lastX = this.value;
+}
+
+y.oninput = function () {
+	if (this.value &gt; lastY) {
+		y1 += 0.01; y2 += 0.01; y3 += 0.01;
+	} else if (this.value &lt; lastY) {
+		y1 -= 0.01; y2 -= 0.01; y3 -= 0.01;
+	}
+	lastY = this.value;
+}
+ </pre>
+ 
+ <h3><u>index.js :</u></h3>
+ <pre>
+ var canvas = document.createElement('canvas');
+canvas.width = 512;
+canvas.height = 512;
+document.body.appendChild(canvas);
+
+var gl = canvas.getContext('webgl');
+var vertexShader = createVertexShader([
+					'attribute vec2 attrVertices;',
+					'void main(void) {',
+						'gl_Position = vec4(attrVertices, 0.0,  1.0);',
+					'}',
+].join('\n'));
+
+var fragmentShader = createFragmentShader([
+					'void main(void) {',
+						'gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);',
+					'}'
+].join('\n'));
+var program = createAndLinkPrograms(vertexShader, fragmentShader);
+
+var render = function () {
+	gl.clearColor(0.0, 0.0, 1.0, 1.0);
+	gl.clear(gl.DEPTH_BUFFER_BIT || gl.COLOR_BUFFER_BIT);
+	var vertices = new Float32Array([x1, y1,
+			x2, y2, 
+			x3, y3]);
+	var verticesBuffer = createAndBindBuffer(vertices, gl.ARRAY_BUFFER);
+	var attrvert = gl.getAttribLocation(program, 'attrVertices');
+	gl.enableVertexAttribArray(attrvert);
+	gl.vertexAttribPointer(attrvert, 2, gl.FLOAT, gl.FALSE, 0, 0);
+	gl.drawArrays(gl.TRIANGLES, 0, 3);
+	requestAnimationFrame(render);
+}
+
+render();
+ </pre>
+ 
+ Now, let's combine everything and see it in action below:<br/>
+ X-AXIS: <input type="range" id="x" value="0"/><br/>
+Y-AXIS: <input type="range" id="y" value="0"/><br/>
+<div id="democanvas"></div>
+
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">JavaScript</span>&nbsp;<span class="label label-default">WebGL</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">13th Nov 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    
+
+</body>
+<script type="text/javascript" src="../scripts/libs/utils.js"></script>
+	<script type="text/javascript" src="xy/events.js"></script>
+	<script type="text/javascript" src="xy/index.js"></script>
+</html>

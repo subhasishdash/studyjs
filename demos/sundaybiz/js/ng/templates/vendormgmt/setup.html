@@ -1,0 +1,133 @@
+<div class="container-fluid">
+      
+<div class="row">
+ <div class="col-12">
+ <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" ng-click="retrieveData('carriers', 'vendor_mgmt')">
+    <a class="nav-link active show" data-toggle="tab" href="#carrier" role="tab" aria-controls="home" aria-selected="false">Carriers</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('categories', 'vendor_mgmt')">
+    <a class="nav-link" data-toggle="tab" href="#category" role="tab" aria-controls="profile" aria-selected="false">Categories</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#" role="tab" aria-controls="Classification" aria-selected="false">Company Information</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#" role="tab" aria-selected="false">Employees</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('grades', 'vendor_mgmt')">
+    <a class="nav-link" data-toggle="tab" href="#grade" role="tab" aria-controls="sites" aria-selected="false">Grades</a>
+  </li>
+  <li class="nav-item" ng-click="retrieveData('types', 'vendor_mgmt')">
+    <a class="nav-link" data-toggle="tab" href="#type" role="tab" aria-controls="sites" aria-selected="false">Types</a>
+  </li>
+   <li class="nav-item" ng-click="retrieveData('status', 'vendor_mgmt')">
+    <a class="nav-link"  data-toggle="tab" href="#stat" role="tab" aria-selected="false">Status</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+ <div class="tab-pane fade active show" id="carrier" role="tabpanel" aria-labelledby="home-tab"> 
+<div id="clicentfor" class="height_155 scrollFy scrollWithFrm">
+  <button class="btn btn-faem" ng-click="addNewColumn('carriers', 'vendor_mgmt')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('carriers', 'vendor_mgmt')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('carriers', 'vendor_mgmt')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('carriers', 'vendor_mgmt')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Carrier Name</th>
+      </tr>
+    </thead>
+    <tbody id="carriers">
+    </tbody>
+  </table>
+</div>
+
+  </div>
+
+  <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('categories', 'vendor_mgmt')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('categories', 'vendor_mgmt')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('categories', 'vendor_mgmt')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('categories', 'vendor_mgmt')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Vendor Category</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="categories">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="grade" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('grades', 'vendor_mgmt')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('grades', 'vendor_mgmt')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('grades', 'vendor_mgmt')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('grades', 'vendor_mgmt')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Vendor Grade</th>
+        <th>Minimum Score</th>
+        <th>Maximum Score</th>
+        <th>Sort Order</th>
+      </tr>
+    </thead>
+    <tbody id="grades">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="stat" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('status', 'vendor_mgmt')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('status', 'vendor_mgmt')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('status', 'vendor_mgmt')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('status', 'vendor_mgmt')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Vendor Status</th>
+        <th>Description</th>
+        <th>Allow PO</th>
+      </tr>
+    </thead>
+    <tbody id="status">
+    </tbody>
+  </table>
+  </div>
+
+  <div class="tab-pane fade" id="type" role="tabpanel" aria-labelledby="profile-tab">
+    <button class="btn btn-faem" ng-click="addNewColumn('types', 'vendor_mgmt')">Add New</button>
+  <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('types', 'vendor_mgmt')">Amend</button>
+  <button class="btn btn-faem" ng-click="saveColumn('types', 'vendor_mgmt')">Save</button>
+  <button class="btn btn-faem Close" ng-click="removeItem('types', 'vendor_mgmt')">Delete</button>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+     <th>&nbsp;</th>
+        <th>Vendor Type</th>
+        <th>Description</th>
+        <th>Special</th>
+      </tr>
+    </thead>
+    <tbody id="types">
+    </tbody>
+  </table>
+  </div>
+
+
+</div>
+</div>
+
+
+</div>
+
+        </div>
+      </div>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : Which one to choose while creating Objects in Javascript?(Object or Map)</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Which one to choose while creating Objects in Javascript?(Object or Map)</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 03rd April 2016 at 9:00 PM</p>
+
+               <br/>
+              <p>We can use both <strong>Object</strong> and <strong>Map</strong> while creating a object in JavaScript . 
+              Basically Objects are similar to Maps because both will set keys to values, retrieve those values, 
+              delete keys, and detect whether something is stored at a key.<br/>
+              But which one is recommended? To know that you must ask yourself few questions listed below:</p>
+              <ul class="list-group">
+              	<li class="list-group-item">1.Do you want to add or remove the key-value pairs frequently?</li>
+              	<li class="list-group-item">2.Do you want to use keys as anything other than String?</li>
+              	<li class="list-group-item">3.Do all values have the same type, and can be used interchangeably?</li>
+              	<li class="list-group-item">4.Do you want to write your own API or use something predefined for creating, updating, deleting and doing basic operations on your object?</li>
+              </ul>
+              <p>If all of the above answers are yes  then you need to use Map otherwise use Objects</p>
+              <h3>How to create a Map object in JavaScript?</h3>
+              <p>It is similar to creating a normal object .</p>
+              <pre>var myMap = new Map();</pre>
+              <h3>Methods Association</h3>
+              <p>
+              <h4>What are the methods associated by window when we create a Object or Map?</h4>
+              <br/>When we create a Object we get no default methods but when we create a Map we get 10 default methods to work on it and they are listed below.</p>
+               <ul class="list-group">
+              	<li class="list-group-item">1.clear() : Removes all key/value pairs from the Map object.</li>
+              	<li class="list-group-item">2.delete(key) : Removes any value associated to the key. Returns true if successfully found and deleted the key ,otherwise returns false </li>
+              	<li class="list-group-item">3.entries() : Returns a new Iterator object that contains an array of [key, value] for each element in the Map object in insertion order.</li>
+              	<li class="list-group-item">4.forEach(callbackFn[, thisArg]) : Calls callbackFn once for each key-value pair present in the Map object, in insertion order. If a thisArg parameter is provided to forEach, it will be used as the this value for each callback.</li>
+              	<li class="list-group-item">5.get(key) : Returns the value associated to the key, or undefined if there is none.</li>
+              	<li class="list-group-item">6.has(key) : Returns true if key exists, otherwise returns false.</li>
+              	<li class="list-group-item">7.keys() : Lists all keys in a new Iterator object that contains the keys for each element in the Map object in insertion order.</li>
+              	<li class="list-group-item">8.set(key, value) : Adds a new entry to the map , key/value can be any data type. </li>
+              	<li class="list-group-item">9.size : Returns the number of key/value pairs added to the map.</li>
+              	<li class="list-group-item">10.values() : Returns a new Iterator object that contains the values for each element in the Map object in insertion order.</li>
+              </ul>
+              <p><h3>Example:</h3>
+              <h4>Creating a map and adding values to it :</h4>
+              	<pre>var myMap = new Map();
+//adding integer as key
+myMap.set(1, "integer as key");
+//adding float as key and value
+myMap.set(9.0, 900.0);
+//adding object as key
+myMap.set(new Object(), window);
+//adding function()
+myMap.set(function(){}, "my function");
+
+//see the size of map
+console.log(myMap.size); // prints 4 because we have added 4 entries
+</pre>
+<h4>List all keys</h4>
+<pre>//see all keys
+for(var key of myMap.keys()) {
+	console.log(key); //prints each key in the loop. 
+}</pre>
+<h4>List all values</h4>
+<pre>//see all values
+for(var value of myMap.values()) {
+	console.log(value); //prints each value in the loop. 
+}</pre>
+<h4>Accessing both key/value together</h4>
+<pre>//accessing both key/value together
+for (var data of myMap.entries()) {
+  console.log(data[0] + " = " + data[1]);//prints each key/value in the loop. Index 0 contains key and 1 contains value.
+}</pre>
+              </p>
+              
+              <p>As you have now learned about Map in JavaScript ,
+               you could decide whether you want all the above facilities by creating a Map simply or to just use Object.</p>
+               <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">JavaScript</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">03rd April 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

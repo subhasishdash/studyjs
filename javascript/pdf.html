@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : How to read a PDF file in JavaScript?</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>How to read a PDF file in JavaScript?</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 04th April 2016 at 9:00 PM</p>
+
+               <br/>
+              <p>Reading PDF file using JavaScript is super easy and will be done using the following steps:
+              	<ul class="list-group">
+              		<li class="list-group-item">1.Create a Canvas to render the PDF.</li>
+              		<li class="list-group-item">2.Download required libraries.</li>
+              		<li class="list-group-item">3.Read the PDF file.</li>
+              		<li class="list-group-item">4.Rendering of PDF file to canvas.</li>
+              	</ul>
+              </p>
+              <p>
+              	<h4>1.Create a Canvas to render the PDF.</h4>
+              	As the contents of the PDF will be rendered to the 
+              	canvas ,so let's create the canvas first which is nothing but a basic HTML tag as shown below.
+              	<pre>&lt;canvas id="canvas" width=512 height=512&gt;&lt;/canvas&gt;</pre>
+              	Or alternatively, if you want to append it dynamically, then use the below snippet
+              	<pre>var canvas = document.createElement('canvas');
+canvas.width = 512;
+canvas.height = 512;
+document.body.appendChild(canvas);</pre>
+              </p>
+              
+              <p><h4>2.Download required libraries.</h4>
+              	After creating the canvas ,we need to download the required libraries 
+              	which is required for parsing and reading a PDF file.
+              	<br/>So lets navigate to 
+              	<a href="https://github.com/mozilla/pdf.js" target="_blank">https://github.com/mozilla/pdf.js</a>
+              	 to download the libraries. After downloading unzip it and look for src folder and 
+              	 add the folder to your project like the below screenshot.<br/>
+              	<img src="../images/javascript/structure.PNG"/><br/>
+              	And add these to your html page like the below screenshot:<br/>
+              	<img src="../images/javascript/structurepdf.PNG"/><br/>
+              </p>
+              
+              <p><h4>3.Read the PDF file.</h4>
+              Next, lets read the pdf file . Now for this demo ,I will take a button where we can upload and the read in JavaScript.
+              <br/>So, lets create the input button first .
+              <pre>&lt;input type="file" id="files"/&gt;</pre>
+              Now, lets add a event handler for the above button to listen for file read events.
+              <pre>//add a handler for reading files from computer
+var newFile = document.getElementById('files');
+newFile.onchange = function (evt) {
+	parseAndRenderPDF(evt, this);
+}</pre> 
+</p>
+
+<p><h4>4.Rendering of PDF file to canvas.</h4>
+So, now whenever we upload a new file <strong>parseAndRenderPDF(evt);</strong> will be called which will parse and render the pdf to canvas. 
+<pre>var parseAndRenderPDF = function (evt, that) {
+	var canvas = document.getElementById('canvas');
+	var tgt = evt.target || window.event.srcElement;
+	var files = tgt.files;
+	// FileReader support
+	if (FileReader &amp;&amp; files &amp;&amp; files.length) {
+		var fr = new FileReader();
+		var extension = files[0].name.split('.').pop().toLowerCase();
+		//if extension is not pdf ,then stop processing further and exit.
+		if(extension !== 'pdf') {
+			alert('please choose a PDF file');
+			return;
+		} else {
+			//parse and process the PDF file.
+			fr.onload = function(e) {
+				console.debug("Loaded the PDF file");
+				PDFJS.getDocument(e.target.result).then(function(pdf) {
+						// Using promise to fetch the page
+						pdf.getPage(1).then(function(page) {
+							var scale = 1.5;
+							var viewport = page.getViewport(scale);
+							var context = canvas.getContext('2d');
+							context.clearRect(0,0, canvas.width, canvas.height);
+							canvas.height = viewport.height;
+							canvas.width = viewport.width;
+							var renderContext = {
+									canvasContext: context,
+									viewport: viewport
+							};
+							//Step 1: store a refer to the renderer
+							var pageRendering = page.render(renderContext);
+							//Step : hook into the pdf render complete event
+							var completeCallback = pageRendering._internalRenderTask.callback;
+							pageRendering._internalRenderTask.callback = function (error) {
+								//Step 2: what you want to do before calling the complete method                  
+								completeCallback.call(that, error);
+							};
+						});
+					});	
+			}
+			fr.readAsDataURL(that.files[0]);
+		}
+	}
+}</pre> 
+              </p>
+              In the below button ,you could upload a pdf file to check it's functionality.
+              <input type="file" id="files"/>
+              <canvas id="canvas" width=512 height=512></canvas>
+               <br/>Please note that ,you can only see the first page of the pdf file. 
+              Showing all pages is something that you could try by your own. 
+              <pre>Hint : pdf.getPage(pageNo)</pre>
+               <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">JavaScript</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">04th April 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+<script src="../scripts/libs/pdfjs/src/shared/global.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/dom_utils.js"></script>
+  <script src="../scripts/libs/pdfjs/src/shared/util.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/annotation_layer.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/font_loader.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/metadata.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/text_layer.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/webgl.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/pattern_helper.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/canvas.js"></script>
+  <script src="../scripts/libs/pdfjs/src/display/api.js"></script>
+   <script>
+    // Specify the main script used to create a new PDF.JS web worker.
+    // In production, leave this undefined or change it to point to the
+    // combined `pdf.worker.js` file.
+    PDFJS.workerSrc = '../scripts/libs/pdfjs/src/worker_loader.js';
+  </script>
+	<script type="text/javascript">
+	//add a handler for reading files from computer
+	var newFile = document.getElementById('files');
+	newFile.onchange = function (evt) {
+		parseAndRenderPDF(evt, this);
+	}
+	
+	var parseAndRenderPDF = function (evt, that) {
+		var canvas = document.getElementById('canvas');
+		var tgt = evt.target || window.event.srcElement;
+		var files = tgt.files;
+		// FileReader support
+		if (FileReader && files && files.length) {
+			var fr = new FileReader();
+			var extension = files[0].name.split('.').pop().toLowerCase();
+			//if extension is not pdf ,then stop processing further and exit.
+			if(extension !== 'pdf') {
+				alert('please choose a PDF file');
+				return;
+			} else {
+				//parse and process the PDF file.
+				fr.onload = function(e) {
+					console.debug("Loaded the PDF file");
+					PDFJS.getDocument(e.target.result).then(function(pdf) {
+							// Using promise to fetch the page
+							pdf.getPage(1).then(function(page) {
+								var scale = 1.5;
+								var viewport = page.getViewport(scale);
+								var context = canvas.getContext('2d');
+								context.clearRect(0,0, canvas.width, canvas.height);
+								canvas.height = viewport.height;
+								canvas.width = viewport.width;
+								var renderContext = {
+										canvasContext: context,
+										viewport: viewport
+								};
+								//Step 1: store a refer to the renderer
+								var pageRendering = page.render(renderContext);
+								//Step : hook into the pdf render complete event
+								var completeCallback = pageRendering._internalRenderTask.callback;
+								pageRendering._internalRenderTask.callback = function (error) {
+									//Step 2: what you want to do before calling the complete method                  
+									completeCallback.call(that, error);
+								};
+							});
+						});	
+				}
+				fr.readAsDataURL(that.files[0]);
+			}
+		}
+	}
+	</script>
+</html>

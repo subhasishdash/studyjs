@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>StudyJS.com : How to write a custom filter in Fabric.js?</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>How to write a custom filter in Fabric.js?</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 10th March 2016 at 9:00 PM</p>
+
+                <hr>
+				<br/>
+              FabricJS is a excellent library when it comes to making the canvas object oriented.
+              Fabric provides interactive object model on top of canvas element.
+              It also helps a lot when it comes to image processing.
+              <br/>
+              Let us add a image to the canvas using FabricJS
+              <pre>var canvas = new fabric.Canvas('canvas');
+fabric.Image.fromURL('../images/fabricjs/dog.jpg', function (oImg) {
+    canvas.add(oImg);
+    canvas.centerObject(oImg);
+    canvas.renderAll();
+  }, {"scaleX": 0.50, "scaleY": 0.50});</pre>
+  The above snippet will render a image onto the canvas as shown below.
+              <canvas id="canvas" width=265 height=200></canvas>
+              Now, let us add some existing image processing given by FabricJS to it.
+              <pre>var filters = [
+               new fabric.Image.filters.Grayscale(),       // grayscale    
+               new fabric.Image.filters.Sepia2(),          // sepia        
+               new fabric.Image.filters.Invert(),          // invert       
+           ];
+var canvas1 = new fabric.Canvas('canvas1');
+fabric.Image.fromURL('../images/fabricjs/dog.jpg', function (oImg) {
+    canvas1.add(oImg);
+    canvas1.centerObject(oImg);
+    canvas1.renderAll();
+  }, {"scaleX": 0.50, "scaleY": 0.50});
+
+$(function() {
+    $('.filters').on("change", "input", function () {
+        var isChecked = $(this).prop("checked"),
+            filter = $(this).data("filter"),
+            obj = canvas1.getObjects()[0];
+        obj.filters[filter] = isChecked ? filters[filter] : null;
+        obj.applyFilters(function () {
+            canvas1.renderAll();
+        });
+    });
+});</pre>
+           <canvas id="canvas1" width=256 height=200></canvas>
+           <div class="filters">
+			    <input type="checkbox" data-filter="0">Grayscale
+			    <input type="checkbox" data-filter="1">Sepia
+			    <input type="checkbox" data-filter="2">Invert
+			</div>
+			<br/>
+			As you can see how easy it is to achieve image processing using Fabric.js.
+			Now, lets add Convolution Kernels to apply matrix image processing in FabricJS.
+			<pre>var convolutionFilters = [
+               new fabric.Image.filters.Convolute({        // emboss       
+            	   matrix: [  -2, -1, 0,
+                              -1, 1, 1,
+                              0, 1, 2 ]
+               }),
+               new fabric.Image.filters.Convolute({        // sharpen      
+                   matrix: [  0, -1, 0,
+                           -1, 5, -1,
+                           0, -1, 0 ]
+               }),
+
+               new fabric.Image.filters.Convolute({        // edge enhance
+                   matrix: [  -1, -1, -1,
+                           -1, 9, -1,
+                           -1, -1, -1 ]
+               })
+           ];
+
+var canvas2 = new fabric.Canvas('canvas2');
+fabric.Image.fromURL('../images/fabricjs/dog.jpg', function (oImg) {
+    canvas2.add(oImg);
+    canvas2.centerObject(oImg);
+    canvas2.renderAll();
+  }, {"scaleX": 0.50, "scaleY": 0.50});
+
+$(function() {
+    $('.convolutionFilters').on("change", "input", function () {
+        var isChecked = $(this).prop("checked"),
+            filter = $(this).data("filter"),
+            obj = canvas2.getObjects()[0];
+        obj.filters[filter] = isChecked ? convolutionFilters[filter] : null;
+        obj.applyFilters(function () {
+            canvas2.renderAll();
+        });
+    });
+});</pre>
+			<canvas id="canvas2" width=256 height=200></canvas>
+			<div class="convolutionFilters">
+			    <input type="checkbox" data-filter="0">Emboss
+			    <input type="checkbox" data-filter="1">Sharpen
+			    <input type="checkbox" data-filter="2">Edge Enhance
+			</div>
+			<hr/>
+			Now let us say I want to adjust contrast of the image. I cannot do that with Fabric.js , I have to write my own custom filter here.
+			So, lets write our filter to add to Fabric.js filters class.
+			<pre>(function(global) {
+
+  'use strict';
+
+  var fabric  = global.fabric || (global.fabric = { }),
+      extend = fabric.util.object.extend;
+
+  fabric.Image.filters.Contrast = fabric.util.createClass(fabric.Image.filters.BaseFilter, /** @lends fabric.Image.filters.MyFilter.prototype */ {
+
+	    /**
+	     * Filter type
+	     * @param {String} type
+	     * @default
+	     */
+	    type: 'Contrast',
+
+	    /**
+	     * Constructor
+	     */
+	    initialize: function(options) {
+	      options = options || { };
+	    },
+
+	    /**
+	     * Applies filter to canvas element
+	     * @param {Object} canvasEl Canvas element to apply filter to
+	     */
+	    applyTo: function(canvasEl) {
+	      var context = canvasEl.getContext('2d'),
+	          imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height),
+	          data = imageData.data;
+	      var contrast = $("#contrast").val();
+	      var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+	      for(var i=0;i&lt;data.length;i+=4)
+	      {
+	          data[i] = factor * (data[i] - 128) + 128;
+	          data[i+1] = factor * (data[i+1] - 128) + 128;
+	          data[i+2] = factor * (data[i+2] - 128) + 128;
+	      }
+
+	      context.putImageData(imageData, 0, 0);
+	    },
+
+	    /**
+	     * Returns object representation of an instance
+	     * @return {Object} Object representation of an instance
+	     */
+	    toObject: function() {
+	      return extend(this.callSuper('toObject'), {
+
+	      });
+	    }
+	  }); /**
+   * Returns filter instance from an object representation
+   * @static
+   * @param {Object} object Object to create an instance from
+   */
+  fabric.Image.filters.Contrast.fromObject = function(object) {
+	    return new fabric.Image.filters.Contrast(object);
+  };
+
+})(typeof exports !== 'undefined' ? exports : this);
+
+//canvas part
+var canvas3 = new fabric.Canvas('canvas3');
+fabric.Image.fromURL('../images/fabricjs/dog.jpg', function (oImg) {
+	oImg.filters.push(
+			new fabric.Image.filters.Contrast);
+	canvas3.add(oImg);
+    canvas3.centerObject(oImg);
+    canvas3.renderAll();
+  }, {"scaleX": 0.50, "scaleY": 0.50});
+$("#contrast").on("click", function () {
+	var objects = canvas3.getObjects();
+	var cimg= objects[0];  
+	if(cimg.filters[2] == null) {
+		cimg.filters[2] = new fabric.Image.filters.Contrast;
+	}
+    cimg.applyFilters(canvas3.renderAll.bind(canvas3));
+});</pre>
+<canvas id='canvas3' width=256 height=200></canvas><br/>
+<input type="range" max="10" min="0" value="0" id="contrast" style="width:200px;">Contrast
+              <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">FabricJS</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">10th March 2016</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+ <!-- 
+                Blog Search Well
+                <div class="well">
+                    <h4>Blog Search</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                </div>
+
+               Blog Categories Well
+                <div class="well">
+                    <h4>Blog Categories</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                                <li><a href="#">Category Name</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2016</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+<script src="../scripts/libs/fabric.min.js"></script>
+	<script src="../scripts/customfilters.js"></script>
+	<script src="../scripts/fabricdemo.js"></script>
+</html>

@@ -56,9 +56,28 @@ var getMeanData = function (menu, type, callback) {
 	    if (err) throw err;
 	    callback(result);
   	});
-}
+};
+
+var updateCompanyInfo = function (menu, type, data, callback) {
+	var sql = "update company_info set " + menu + "=\'" + data + "\'";
+	console.log(sql);
+  	con.query(sql, function (err, result, fields) {
+	    if (err) throw err;
+	    callback();
+  	});
+};
+
+var retrieveCompanyInfo = function (menu, callback) {
+	var sql = "SELECT " + menu + " FROM company_info limit 1";
+  	con.query(sql, function (err, result, fields) {
+	    if (err) throw err;
+	    callback(result);
+  	});
+};
 
 module.exports = {
+	retrieveCompanyInfo : retrieveCompanyInfo,
+	updateCompanyInfo : updateCompanyInfo,
 	updateSetup : updateSetup,
 	getMeanData : getMeanData
 }

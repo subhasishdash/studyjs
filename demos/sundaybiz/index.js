@@ -27,3 +27,19 @@ app.post('/retrieval', function (req, res) {
 		res.send(data);
 	});
 });
+
+app.post('/saveCompanyInfo', function (req, res) {
+	var menu = req.body.setup_menu;
+	var type = req.body.setup_type;
+	var data = req.body.data;
+	db.updateCompanyInfo(menu, type, data, function () {
+		res.send(data);
+	});
+});
+
+app.post('/retrieveCompanyInfo', function (req, res) {
+	var menu = req.body.setup_menu;
+	db.retrieveCompanyInfo(menu, function (data) {
+		res.send(data);
+	});
+});

@@ -15,7 +15,7 @@
     <li class="nav-item" ng-click="retrieveData('classification', 'fmea')">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#classification1" role="tab" aria-controls="Classification" aria-selected="false">Classification</a>
   </li>
-    <li class="nav-item" ng-click="retrieveData('companyInfo', 'fmea')">
+    <li class="nav-item" ng-click="retrieveCompanyInfo('fmea')">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#company_Info" role="tab" aria-controls="Company_Info" aria-selected="false">Company Info</a>
   </li>
    <li class="nav-item" ng-click="retrieveData('sites', 'fmea')">
@@ -229,104 +229,72 @@
   </table>
   </div>
   <div class="tab-pane fade" id="company_Info" role="tabpanel" aria-labelledby="company_Info">
-  
-          <button class="btn btn-faem" ng-click="saveColumn('companyInfo', 'fmea')">Save</button>
-          <button class="btn btn-faem Close" ng-click="removeItem('companyInfo', 'fmea')">Delete</button>
   <div class="row row-sm">
         <div id="PANis" class="col-md-6" datatypesag="themesagsetting">
           <div class="form-group">
           <label class="inputlabel inputlabel_150">Abbreviation :</label> 
           <div class="inputBox">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" ng-model="company.abbreviation"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Company Name :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.name"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Address :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.address"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">City :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.city"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">State :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.state"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Zip :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.zip"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Country :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.country"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Phone :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.phone"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">Fax :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.fax"/>
+            </div>
+            </div>
+            <div class="form-group">
+          <label class="inputlabel inputlabel_150">FMEA Document :</label> 
+          <div class="inputBox">
+          <input type="text" class="form-control" ng-model="company.fmeaDoc"/>
             </div>
             </div>
         </div>
-
-          <div class="col-md-6">
-          <div class="form-group">
-          <label class="inputlabel inputlabel_150">Company Name</label> 
-          <div class="inputBox">
-          <input type="text" class="form-control">
-            </div>
-        </div></div>
-
 </div>
-        <div class="row row-sm">
-          <div class="col-sm-12 col-lg-12">
-            <div class="form-group">
-              <label class="inputlabel inputlabel_150">FMEA Revision</label>
-              <div class="inputBox">
-                  <textarea type="text" class="form-control"></textarea>
-                  
-                </div>
-            </div>
-          </div>
-          </div>
-<div class="row row-sm">
-          <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">City :</label>
-              <div class="inputBox">
-                <input type="text" class="form-control">
-              </div>
-            </div>
-          </div>
 
-          <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">State :
-              </label>
-              <div class="inputBox">
-                <input type="text" class="form-control">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">Zip :
-              </label>
-              <div class="inputBox">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">Country :
-              </label>
-              <div class="inputBox">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-          </div>
-            <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">Phone :
-              </label>
-              <div class="inputBox">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-          </div>
-            <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">Fax :
-              </label>
-              <div class="inputBox">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 col-lg-4">
-            <div class="form-group">
-              <label for="exampleSelect" class="inputlabel inputlabel_150">FMEA Document:
-              </label>
-              <div class="inputBox">
-                <input type="number" class="form-control">
-              </div>
-            </div>
-          </div>
-
+        <button class="btn btn-faem" ng-click="updateCompanyInfo('companyInfo', 'fmea')">Update</button>
         </div>
 
   </div>

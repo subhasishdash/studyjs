@@ -109,9 +109,41 @@ app.controller("myCtrl", function($scope, $compile, $sce, $http,
         });
     };
 
+    $scope.retrieveCompanyInfo = function (menu) {
+        var req = {
+         method: 'POST',
+         url: './retrieveCompanyInfo/',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         data: {setup_menu : menu }
+        }
+        $http(req).then(function(data){
+            $scope.company = JSON.parse(atob(data.data[0][menu]));
+        }, function(){
+            console.log('Failed to retrieveCompanyInfo');
+        });
+    };
+
+    $scope.updateCompanyInfo = function (type, menu) {
+        var req = {
+         method: 'POST',
+         url: './saveCompanyInfo/',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         data: { setup_type : type, setup_menu : menu, data : btoa(JSON.stringify($scope.company)) }
+        }
+        $http(req).then(function(data){
+            alert('Updated Successfully');
+        }, function(){
+            alert('Failed to update');
+        });
+
+    };
+
     $scope.retrieveData = function (setup_type, setup_menu) {
         if (!setup_type) return;
-        if (setup_type === 'companyInfo') return;
         var req = {
          method: 'POST',
          url: './retrieval/',

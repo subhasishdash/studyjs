@@ -1,13 +1,11 @@
 app.controller("myCtrl", function($scope, $compile, $sce, $http, 
-    htmlService, rendererService, counterService) {
+    rendererService, counterService) {
     $scope.firstName = "John";
     $scope.lastName = "Doe";
     $scope.isAmending = false;
-    $scope.dashboardHTML = $sce.trustAsHtml(htmlService.searchHTMLByPageID('FMEA'));
-
     $scope.leftPanel = [
-        //'FMEA', 'SWOT Analysis', 'Reports',
-    	{ name : 'FMEA', submenu : ['Setup'], menu_name : 'fmea'},
+        //, 'SWOT Analysis', 'Reports',
+    	{ name : 'FMEA', submenu : ['FMEA', 'Setup'], menu_name : 'fmea'},
     	{ name : 'Asset Tracking Database', submenu : ['Setup'], menu_name : 'asset_tracking'},
     	{ name : 'Ground Control', submenu : ['Setup'], menu_name : 'ground_control'},
     	{ name : 'Q-Med Database', submenu : ['Setup'], menu_name : 'q_med'},
@@ -18,26 +16,32 @@ app.controller("myCtrl", function($scope, $compile, $sce, $http,
         { name : 'Vendor Management Database', submenu : ['Setup'], menu_name : 'vendor_mgmt'}
     ];
 
+    $scope.moduleName = 'fmea';
+    $scope.currentPage = 'fmea';
+
+    $scope.templateUrl = function () {
+        return '/js/ng/templates/' + $scope.moduleName + '/' + $scope.currentPage + '.html';
+    };
+
     $scope.updateDashboard = function (pageID, menu) {
-        var data = htmlService.searchHTMLByPageID(pageID, menu);
-    	//var _html = $sce.trustAsHtml(data);
-        $('#dashboardHTML').html('');
-        var $el = $(data).appendTo('#dashboardHTML');
-        $compile($el)($scope);
-        if (pageID === 'Setup' && menu === 'fmea')
+        $scope.moduleName = menu;
+        $scope.currentPage = pageID;
+        setTimeout (function () {
+            if (pageID === 'Setup' && menu === 'fmea')
             $scope.retrieveData('severity_rating', menu);
-        else if (pageID === 'Setup' && menu === 'asset_tracking')
-            $scope.retrieveData('asset_categories', menu);
-        else if (pageID === 'Setup' && menu === 'ground_control')
-            $scope.retrieveData('class_types', menu);
-        else if (pageID === 'Setup' && menu === 'q_med')
-            $scope.retrieveData('disposition', menu);
-        else if (pageID === 'Setup' && menu === 'quality')
-            $scope.retrieveData('audit_types', menu);
-        else if (pageID === 'Setup' && menu === 'training')
-            $scope.retrieveData('class_types', menu);
-        else if (pageID === 'Setup' && menu === 'vendor_mgmt')
-            $scope.retrieveData('carriers', menu);
+            else if (pageID === 'Setup' && menu === 'asset_tracking')
+                $scope.retrieveData('asset_categories', menu);
+            else if (pageID === 'Setup' && menu === 'ground_control')
+                $scope.retrieveData('class_types', menu);
+            else if (pageID === 'Setup' && menu === 'q_med')
+                $scope.retrieveData('disposition', menu);
+            else if (pageID === 'Setup' && menu === 'quality')
+                $scope.retrieveData('audit_types', menu);
+            else if (pageID === 'Setup' && menu === 'training')
+                $scope.retrieveData('class_types', menu);
+            else if (pageID === 'Setup' && menu === 'vendor_mgmt')
+                $scope.retrieveData('carriers', menu);
+        }, 500);
     };
 
     $scope.addNewColumn = function (type, menu) {
@@ -60,7 +64,8 @@ app.controller("myCtrl", function($scope, $compile, $sce, $http,
             if (indexesToIgnore.indexOf(k++) === -1) {
                 var _ar = [];
                 for (var j = i; j < i + count; j++) {
-                    _ar.push($el[j].textContent);
+                    var _txt = $el[j].textContent;
+                    _ar.push(_txt === '' ? ' ' : _txt);
                 }
                 existingData.push(_ar);
             }
@@ -76,7 +81,8 @@ app.controller("myCtrl", function($scope, $compile, $sce, $http,
                     if (_elVal !== '') {
                         dataAvailable = true;
                     }
-                    _ar.push($el[j].value);
+                    var _txt = $el[j].value;
+                    _ar.push(_txt === '' ? ' ' : _txt);
                 }
                 //if atleast one row is filled in the whole column
                 if (dataAvailable)

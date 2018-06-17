@@ -4,7 +4,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script type="text/javascript" src="js/ng/app.js"></script>
 	<script type="text/javascript" src="js/ng/controller/MyController.js"></script>
-	<script type="text/javascript" src="js/ng/service/HTMLService.js"></script>
   <script type="text/javascript" src="js/ng/service/RendererService.js"></script>
   <script type="text/javascript" src="js/ng/service/CounterService.js"></script>
 	<meta charset="utf-8">
@@ -29,7 +28,6 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-    	<!--<div ng-include="'leftpanel.html'"></div>-->
     	<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 	   <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="#">
@@ -157,8 +155,7 @@
 
 
   </nav>
-  <!--ng-bind-html="dashboardHTML" -->
-  	<div  id="dashboardHTML" class="content-wrapper"></div>
+    <div class="content-wrapper"><ng-include src="templateUrl()"></ng-include></div>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
   </div>

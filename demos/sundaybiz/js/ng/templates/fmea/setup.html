@@ -28,7 +28,7 @@
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#customers1" role="tab" aria-controls="Customers" aria-selected="false">Customers</a>
   </li>
    <li class="nav-item" ng-click="retrieveData('parts', 'fmea')">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#parts1" role="tab" aria-controls="parts" aria-selected="true">parts</a>
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#parts1" role="tab" aria-controls="parts" aria-selected="true">Parts</a>
   </li>
   <li class="nav-item" ng-click="retrieveData('fmeatypes', 'fmea')">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#fmeatype1" role="tab" aria-controls="FMEA" aria-selected="false">FMEA Types</a>
@@ -40,6 +40,7 @@
   <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
   
 <div id="clicentfor" class="height_155 scrollFy scrollWithFrm">
+  <br/>
   <button class="btn btn-faem" ng-click="addNewColumn('severity_rating', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('severity_rating', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('severity_rating', 'fmea')">Save</button>
@@ -62,6 +63,7 @@
   </div>
 
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+<br/>
     <button class="btn btn-faem" ng-click="addNewColumn('occurence_rating', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('occurence_rating', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('occurence_rating', 'fmea')">Save</button>
@@ -83,7 +85,7 @@
   </div>
 
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-      <button class="btn btn-faem" ng-click="addNewColumn('detection_rating', 'fmea')">Add New</button>
+     <br/> <button class="btn btn-faem" ng-click="addNewColumn('detection_rating', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('detection_rating', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('detection_rating', 'fmea')">Save</button>
   <button class="btn btn-faem Close" ng-click="removeItem('detection_rating', 'fmea')">Delete</button>
@@ -104,7 +106,7 @@
 
 </div>
 <div class="tab-pane " id="classification1" role="tabpanel" aria-labelledby="classification">
-   <button class="btn btn-faem" ng-click="addNewColumn('classification', 'fmea')">Add New</button>
+  <br/> <button class="btn btn-faem" ng-click="addNewColumn('classification', 'fmea')">Add New</button>
    <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('classification', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('classification', 'fmea')">Save</button>
   <button class="btn btn-faem Close" ng-click="removeItem('classification', 'fmea')">Delete</button>
@@ -124,7 +126,7 @@
  </div>
 
  <div class="tab-pane fade" id="sites1" role="tabpanel" aria-labelledby="sites">
-  <button class="btn btn-faem" ng-click="addNewColumn('sites', 'fmea')">Add New</button>
+  <br/><button class="btn btn-faem" ng-click="addNewColumn('sites', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('sites', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('sites', 'fmea')">Save</button>
   <button class="btn btn-faem Close" ng-click="removeItem('sites', 'fmea')">Delete</button>
@@ -143,7 +145,7 @@
   </div>
 
   <div class="tab-pane fade" id="departments1" role="tabpanel" aria-labelledby="Departments">
-
+<br/>
   <button class="btn btn-faem" ng-click="addNewColumn('departments', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('departments', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('departments', 'fmea')">Save</button>
@@ -165,7 +167,7 @@
 
   </div>
   <div class="tab-pane fade" id="customers1" role="tabpanel" aria-labelledby="Customers">
- 
+ <br/>
   <button class="btn btn-faem" ng-click="addNewColumn('customers', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('customers', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('customers', 'fmea')">Save</button>
@@ -188,7 +190,7 @@
   </table>
   </div>
   <div class="tab-pane fade" id="fmeatype1" role="tabpanel" aria-labelledby="FMEA">
-  
+  <br/>
   <button class="btn btn-faem" ng-click="addNewColumn('fmeatypes', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('fmeatypes', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('fmeatypes', 'fmea')">Save</button>
@@ -206,7 +208,7 @@
   </div>
   
    <div class="tab-pane fade" id="parts1" role="tabpanel" aria-labelledby="parts">
-     
+     <br/>
   <button class="btn btn-faem" ng-click="addNewColumn('parts', 'fmea')">Add New</button>
   <button class="btn btn-faem" ng-show="isAmending" ng-click="amendColumn('parts', 'fmea')">Amend</button>
   <button class="btn btn-faem" ng-click="saveColumn('parts', 'fmea')">Save</button>

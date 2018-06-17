@@ -60,7 +60,7 @@ app.service('rendererService', function() {
 			        for (var j = 0; j < inputData.length; j++) {
 			            var innerObj = inputData[j];
 			            htmlData += htmlStart;
-		                htmlData += '<td>' + (innerObj[0] || atob(innerObj.sites)) + '</td>';
+		                htmlData += '<td>' + (innerObj[0] || atob(innerObj.site)) + '</td>';
 		                htmlData += '<td>' + (innerObj[1] || atob(innerObj.description)) + '</td>';
 			        }
 	        	})();

@@ -14,37 +14,37 @@
 <url>
   <loc>http://www.studyjs.com/webgl/texture.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/webgl/webgl.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/fabricjs/fabricjs.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/fabricjs/fabricobjects.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/jquery/watermark.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/canvas/image.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/webgl/webglcontext.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/nodejs/nodejsscrape.html</loc>
@@ -59,7 +59,7 @@
 <url>
   <loc>http://www.studyjs.com/html5/webcam.html</loc>
   <lastmod>2016-03-24T16:47:00+00:00</lastmod>
-  <changefreq>always</changefreq>
+  <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://www.studyjs.com/fabricjs/scale.html</loc>
@@ -144,6 +144,11 @@
 <url>
   <loc>http://www.studyjs.com/tools/canvas/canvas-toDataURL.html</loc>
   <lastmod>2018-04-06T16:47:00+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://www.studyjs.com/tools/pdfviewer/pdfcanvasviewer.html</loc>
+  <lastmod>2018-06-24T13:40:00+00:00</lastmod>
   <changefreq>always</changefreq>
 </url>
 </urlset>

@@ -10,5 +10,11 @@
  		"link" : "canvas/canvas-toDataURL.html",
  		"tags" : "Html5 Canvas",
  		"posted" : "29th May 2018"
+ 	},
+ 	{
+ 		"title" : "Javascript Html5 PDF Viewer",
+ 		"link" : "pdfviewer/pdfcanvasviewer.html",
+ 		"tags" : "Html5 Canvas",
+ 		"posted" : "29th May 2018"
  	}
 ]

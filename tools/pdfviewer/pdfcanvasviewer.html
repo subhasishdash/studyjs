@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	<link rel="shortcut icon" sizes="256x256" href="http://www.studyjs.com/images/logo.PNG" />
-    <title>StudyJS.com : Canvas toDataURL</title>
+    <title>StudyJS.com : Canvas PDF Viewer using Javascript</title>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="http://www.studyjs.com/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="http://www.studyjs.com/css/blog-post.css" rel="stylesheet">
 <script type="text/javascript" src="http://www.studyjs.com/js/analytics.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -71,41 +72,39 @@
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1>HTML5 Canvas toDataURL</h1>
-
-                <!-- Author -->
-<!--                 <p class="lead"> -->
-<!--                     by <a href="#">Start Bootstrap</a> -->
-<!--                 </p> -->
+                <h1>HTML5 Canvas PDF Viewer</h1>
 
                 <hr>
 				
                 <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on 29th May 2018 at 9:00 PM</p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 23rd June 2018 at 9:00 PM</p>
 
-				<h3><u>Canvas toDataURL</u></h3>
+				<h3><u>Canvas PDF Viewer using Javascript</u></h3>
               	
 				<div>
-        <label for="inputFile">Choose image file:</label><br>
+        <label for="inputFile">Choose any PDF file:</label><br>
         <input type="file" id="inputFile">
     </div>
     <br>
-   <div class="row"> 
-    <div class="">
-        <h1>Canvas toDataURL() string</h1>
-        <textarea id="toDataURL" placeholder="Base64 encoded URL will appear here" cols="80" rows="25"></textarea>
-    </div>
-</div>
-<hr/>
-<div >
-        <h1>Canvas Image</h1>
-        <img src="" style="display: none;" id="testImg" />
-    </div>
 
+    
+    <div class="row" id="viewer">
+        <div class="row" id="menu" style="display: none;">Page <span id="currPage"></span> of <span id="totalPages"></span>
+            <button class="btn" onclick="navigateTo('prev')">Prev Page</button>
+            <button class="btn" onclick="navigateTo('next')">Next Page</button>
+            <input type="text" placeholder="Page Number" id="goToPage"/>
+        </div>
+        <canvas id="canvas" width=512 height=512></canvas>
+    </div>
+   
                <div class="row">
                 <div class="col-xs-9">
-                  <h4><span class="label label-default">JavaScript</span></h4><h4>
-                  <small style="font-family:courier,'new courier';" class="text-muted">29th May 2018</small>
+                  <h4><span class="label label-default">JavaScript</span>
+                        <span class="label label-default">PDF</span>
+                  </h4>
+
+                  <h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">23rd June 2018</small>
                   </h4></div>
                 <div class="col-xs-3"></div>
               </div>
@@ -128,7 +127,7 @@
 </select> </td></tr>
 </table>
 <input type="hidden" name="currency_code" value="USD">
-<input type="image" src="../../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<input type="image" src="http://www.studyjs.com/images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
 <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
 </form>
                     
@@ -191,33 +190,126 @@
    
 </div>
     <!-- jQuery -->
-    <script src="../../js/jquery.js"></script>
+    <script src="http://www.studyjs.com/js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="http://www.studyjs.com/js/bootstrap.min.js"></script>
 
 </body>
-<script type="text/javascript">
-	  var fileSel = function(evt) {
-        var files = evt.target.files;
-        var file = files[0];
-
-        if (files && file) {
-            var fr = new FileReader();
-            fr.onload = function(readerEvt) {
-                var binaryString = readerEvt.target.result;
-                document.getElementById('toDataURL').value = binaryString;
-                document.getElementById('testImg').src = binaryString;
-                document.getElementById('testImg').style.display = 'block';
-            };
-            fr.readAsDataURL(file);
+<script src="http://www.studyjs.com/scripts/libs/pdfjs/src/shared/global.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/dom_utils.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/shared/util.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/annotation_layer.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/font_loader.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/metadata.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/text_layer.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/webgl.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/pattern_helper.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/canvas.js"></script>
+  <script src="http://www.studyjs.com/scripts/libs/pdfjs/src/display/api.js"></script>
+   <script>
+    // Specify the main script used to create a new PDF.JS web worker.
+    // In production, leave this undefined or change it to point to the
+    // combined `pdf.worker.js` file.
+    PDFJS.workerSrc = 'http://www.studyjs.com/scripts/libs/pdfjs/src/worker_loader.js';
+  </script>
+    <script type="text/javascript">
+    var pdfBuffer, pageNo = 1, numPages;
+ 
+    var navigateTo = function (evt) {
+        if (evt === 'next') {
+            pageNo++;
+        } else {
+            pageNo--;
         }
+        loadPage(pageNo, evt);
     };
 
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        document.getElementById('inputFile').addEventListener('change', fileSel, false);
-    } else {
-        alert('The File APIs are not fully supported in this browser.');
+    //add a handler for reading files from computer
+    var newFile = document.getElementById('inputFile');
+    newFile.onchange = function (evt) {
+        pdfBuffer = null;
+        numPages = null;
+        pageNo = null;
+        parseAndRenderPDF(evt, this);
     }
-	</script>
+
+    var loadPage = function (pgNo, evt) {
+        if (numPages && !(pgNo <= numPages && pgNo > 0)) {
+            if (evt === 'next') {
+                pageNo--;
+            } else {
+                pageNo++;
+            }
+            return;
+        }
+        $('#currPage').html(pgNo);
+        try {
+            PDFJS.getDocument(pdfBuffer).then(function(pdf) {
+                numPages = pdf.numPages;
+                $('#totalPages').html(numPages);
+                // Using promise to fetch the page
+                pdf.getPage(pgNo).then(function(page) {
+                    var scale = 1.5;
+                    var viewport = page.getViewport(scale);
+                    var context = canvas.getContext('2d');
+                    context.clearRect(0,0, canvas.width, canvas.height);
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                    };
+                    //Step 1: store a refer to the renderer
+                    var pageRendering = page.render(renderContext);
+                    //Step : hook into the pdf render complete event
+                    var completeCallback = pageRendering._internalRenderTask.callback;
+                    pageRendering._internalRenderTask.callback = function (error) {
+                        //Step 2: what you want to do before calling the complete method                  
+                        //completeCallback.call(that, error);
+                    };
+                }).catch(function(error) {
+                  console.log(error);
+                });
+            }); 
+        } catch (E) {
+            console.log(E);
+        }
+    };
+    
+    var parseAndRenderPDF = function (evt, that) {
+        var canvas = document.getElementById('canvas');
+        var tgt = evt.target || window.event.srcElement;
+        var files = tgt.files;
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            var extension = files[0].name.split('.').pop().toLowerCase();
+            //if extension is not pdf ,then stop processing further and exit.
+            if(extension !== 'pdf') {
+                alert('please choose a PDF file');
+                return;
+            } else {
+                //parse and process the PDF file.
+                fr.onload = function(e) {
+                    console.debug("Loaded the PDF file");
+                    pdfBuffer = e.target.result;
+                    pageNo = 1;
+                    loadPage(pageNo);
+                    $('#menu').show();
+                }
+                fr.readAsDataURL(that.files[0]);
+            }
+        }
+    }
+    $('#goToPage').on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            var page = Number($('#goToPage').val());
+            if (!isNaN(page)) {
+                pageNo = page;
+                loadPage(page);
+            }
+        }
+    });
+    </script>
 </html>

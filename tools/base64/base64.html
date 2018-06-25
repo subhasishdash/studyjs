@@ -160,7 +160,7 @@
         (d.head || d.body).appendChild(s);
     })();
 </script>
-<script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+ 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
         <!-- Footer -->
         <footer>
@@ -187,8 +187,8 @@
       
     </div>
   </div>
-  <iframe src="http://www.studyjs.com/jobs.html" width="400" height="300" style="border:none;"></iframe>
-  <script>var sharebutton_is_horizontal = false; document.write('<script src="//cdn.front.to/libs/share7.js"></scr' + 'ipt>');</script>
+   
+   
 </div>
     <!-- jQuery -->
     <script src="../../js/jquery.js"></script>
@@ -198,6 +198,19 @@
 
 </body>
 <script type="text/javascript">
+    function b64EncodeUnicode(str) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16))
+        }))
+    }
+
+    function b64DecodeUnicode(str) {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        }).join(''))
+    }
+
+
 	  var fileSel = function(evt) {
         var files = evt.target.files;
         var file = files[0];
@@ -207,18 +220,18 @@
             fr.onload = function(readerEvt) {
                 var binaryString = readerEvt.target.result;
                 document.getElementById('decstr').value = binaryString;
-                document.getElementById("encstr").value = btoa(binaryString);
+                document.getElementById("encstr").value = b64EncodeUnicode(binaryString);
             };
-            fr.readAsBinaryString(file);
+            fr.readAsText(file, 'utf-8');
         }
     };
 
     document.getElementById('decstr').onkeyup = function () {
-    	document.getElementById('encstr').value = btoa(document.getElementById('decstr').value);
+    	document.getElementById('encstr').value = b64EncodeUnicode(document.getElementById('decstr').value);
     };
 
     document.getElementById('encstr').onkeyup = function () {
-    	document.getElementById('decstr').value = atob(document.getElementById('encstr').value);
+    	document.getElementById('decstr').value = b64DecodeUnicode(document.getElementById('encstr').value);
     };
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {

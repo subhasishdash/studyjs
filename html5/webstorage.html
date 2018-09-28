@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="../images/logo.PNG" />
+    <title>Local Storage: Usage and Differences from Session storage</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="../js/analytics.js"></script>
+<style type="text/css">
+    table tr {
+        border : 1px solid gray;
+    }
+    table tr td {
+      border-right: 1px solid gray;
+    }
+
+    table tr td:last-of-type {
+      border: none;
+    }
+    li {
+        display: contents;
+    }
+</style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Local Storage: Usage and Differences from Session storage</h1>
+
+               
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 27th Sep 2018 at 9:00 PM</p>
+
+<br/>
+    <p> Local storage is a storage area within the browser. Though it is little less powerful than indexed DB, but it has a lot of benefits for web developers as well as end-users and they are as follows:
+        <ul>
+            <li> No need to use or depend on cookies anymore because cookies are included in every server request that affects website performance.</li>
+            <li> The storage limit of local storage is 5MB, much more than cookies and the information is kept in browser only. In case you need more than 5MB storage, opt for indexed DB.</li>
+            <li> Web storage (local and session) is per domain and protocol. Hence, all the pages from a single Origin can store and access same data and data is never shared among various domains.</li>
+            <li> Local storage is never expired, but Session storage data is kept in memory until the browser tab is closed.</li>
+            <li> It is supported in all modern browser.</li>
+        </ul>
+    </p>
+        <br>
+        <h4><u> Check Browser Support:</u></h4>
+        <p> Before using it, check browser support:
+        <pre>
+var isStorageSupported = function()
+ { 
+    if(typeof(Storage)! == 'undefined') { 
+        return true;
+    } else {
+        return false;
+    }
+ }
+        </pre>
+    </p>
+    <br>
+    <h4><u> How to Use ?</u></h4
+    <p> It is very easy to use Local storage or Session storage. We have 3 methods for the same:
+      <ul>
+         <li> setItem(key, value), sets the value in memory using key.</li>
+         <li> getItem(key), gets the value from memory using the key.</li>
+         <li> removeItem(key), removes a key from memory.</li>
+      </ul>
+    </p>
+    <br>
+    <h4> <u>Example:</u></h4>
+    <pre>
+localstorage.setItem('studyjs.com','I am currently browsing studyjs.com'); //sets the key
+localstorage.getItem('studyjs.com'); //Fetches the value by key
+localstorage.removeItem('studyjs.com'); //removes the key
+    </pre>
+    <br>
+    
+    <h4><u> Difference / Similarities between storage ( local & session):</u></h4>
+        <table>
+        <tr>
+            
+            <th> Local storage </th>
+            <th> Session storage </th>
+
+        </tr>
+        <ul>
+        <tr>
+            <td><li> Stays in browser memory forever.</li></td>
+            <td><li> Stays in browser memory until tab/ browser is closed.</li></td>
+        </tr>
+        <tr>
+            <td><li> Deleting cookies by end-user removes the local storage data from browser.</li></td>
+            <td><li> Deleting cookies by end-user removes the session storage data from browser.</li></td>
+        </tr>
+        <tr> 
+            <td><li> Storage limit is larger than cookies and is atleast 5MB. Whereas cookies have onlt 4KB.</li></td>
+            <td><li> Storage limit is larger than cookies and is atleast 5MB. Whereas cookies have onlt 4KB.</li></td>
+        </tr>
+        <tr>
+            <td><li> No automatic transferring of data for every request to server like cookies</li></td>
+            <td><li> No automatic transferring of data for every request to server like cookies</li></td>
+        </tr>
+        <tr>
+            <td><li> Supported in all HTML 5 compatible browsers.</li></td>
+            <td><li> Supported in all HTML 5 compatible browsers.</li></td>
+        </tr>
+        <tr>
+            <td><li> Data is persistent.</li></td>
+            <td><li> Data is not persistent i.e it will be lost once the window/ tab is closed.</li></td>
+        </tr>
+    </ul>
+       </table>
+
+
+       <h4><u> Drawbacks:</u></h4>
+    <ul> 
+        <li> Local storage and Session storage can only keep string as value. In order to keep binary data such as typed array, Blob we must use indexed DB.</li>
+    </ul>
+    <br>
+     
+
+               <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Local Storage</span>
+						<span class="label label-default">Session Storage</span>
+                        <span class="label label-default">HTML5</span>
+                  </h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">27th Sep 2018</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+ 
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2018</p>
+
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+</html>

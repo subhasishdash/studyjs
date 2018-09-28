@@ -142,5 +142,11 @@
  		"link" : "html5/dicom.html",
  		"tags" : "Javascript",
  		"posted" : "23rd March 2016"
- 	}
+ 	},
+	{
+		"title" : "Local Storage: Usage and Differences from Session storage",
+		"link"  : "html5/webstorage.html",
+		"tags"  : "Local Storage, Session Storage, HTML5",
+		"posted": "27th Sep 2018"
+	}
 ]

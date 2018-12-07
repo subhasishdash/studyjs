@@ -25,7 +25,7 @@
  	},
  	{
  		"title" : "JSON Formatter and Validator",
- 		"link" : "base64/jsonformatter.html",
+ 		"link" : "json/jsonformatter.html",
  		"tags" : "JSON, Javascript",
  		"posted" : "7th Dec 2018"
  	}

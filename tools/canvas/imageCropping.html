@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="shortcut icon" sizes="256x256" href="http://www.studyjs.com/images/logo.PNG" />
+    <title>StudyJS.com : Image Cropping in WebGL</title>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="http://www.studyjs.com/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://www.studyjs.com/css/blog-post.css" rel="stylesheet">
+<script type="text/javascript" src="http://www.studyjs.com/js/analytics.js"></script>
+<script type="text/javascript" src="../../scripts/libs/fabric.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="http://www.studyjs.com"><img width="138" src="http://www.studyjs.com/images/logo.PNG"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!-- <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Image Cropping in WebGL</h1>
+
+                <!-- Author -->
+<!--                 <p class="lead"> -->
+<!--                     by <a href="#">Start Bootstrap</a> -->
+<!--                 </p> -->
+
+                <hr>
+				
+                <!-- Date/Time -->
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 7th Dec 2018</p>
+
+				<h3><u>Image Cropping</u></h3>
+              	
+				<div class="row">
+                    <input type="file" id="inputFile" class="btn"/>
+                    <u><h4>Steps to crop the image:</h4></u>
+                    <p>
+                        -Browse for a image from your computer.<br/>
+                        -Move the red rectangle box over the image as per requirement.<br/>
+                        -Resize the red rectangle over the image as per requirement and click update button below to crop the image.<br/>
+                        -Go to the bottom of the page to preview and download the image in 1920*1080, 900*1125 and 240*240. <br/>
+                        -More formats can be added as per request in comments section below.
+                    </p>
+                    <button class="btn btn-primary" id="updateVP">Update</button>            
+            </div>    
+            <div class="row">
+                    <canvas id="smallcanvas" class="img-responsive" style="display:none"></canvas>
+            </div>
+            <div class="row" id="fcanvas" style="display:none;">
+                    <canvas id="canvas" style="display:none"></canvas>
+                    <canvas id="fabricCanvas"></canvas>
+            </div>
+
+            <div class="row" id="canvases" style="display:none">
+                    <div class="col-lg-6"><canvas id="canvas19801080" width="1980" height="1080" class="img img-responsive"></canvas></div>
+                    <div class="col-lg-4"><canvas id="canvas9001125" width="900" height="1125" class="img img-responsive"></canvas></div>
+                    <div class="col-lg-2"><canvas id="canvas240240" width="240" height="240" class="img img-responsive"></canvas></div>
+            </div>
+
+            <div class="row" id="downloadArea" style="display:none;">
+                <button class="btn btn-success" ng-click="downloadImage('1')">Download 1980 * 1080</button>
+                <button class="btn btn-success" ng-click="downloadImage('2')">Download 900 * 1125</button>
+                <button class="btn btn-success" ng-click="downloadImage('3')">Download 240 * 240</button>
+            </div>
+
+            <a href="#" download="myImage.jpg" id="download"></a>
+
+               <div class="row">
+                <div class="col-xs-9">
+                  <h4><span class="label label-default">Html5</span>
+                    <span class="label label-default">Canvas</span>
+                    <span class="label label-default">WebGL</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">7th Dec 2018</small>
+                  </h4></div>
+                <div class="col-xs-3"></div>
+              </div>
+              <br><br>
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+                <div class="well">
+<!--                     <h4>Side Widget Well</h4> -->
+                    <p>Please donate us to keep going and write unlimited free helpful articles which could be useful for you.</p>
+                    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="Z23PEFZ4ED5GN">
+<table>
+<tr><td><input type="hidden" name="on0" value="Options"></td></tr><tr><td><select name="os0">
+	<option value="We saved some time">We saved some time $10.00 USD</option>
+	<option value="you liked us and wants us to improve">you liked us and wants us to improve $25.00 USD</option>
+	<option value="Really impressed">Really impressed $50.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="../../images/paypal-donate-button.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+                    
+                </div>
+
+            </div> 
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = location.href + new Date(); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//studyjscom.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+ 
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        <!-- Footer -->
+        <footer>
+			
+             <div class="row">
+                <div class="col-lg-12">
+                    <p class="col-lg-8">Copyright &copy; StudyJS.com 2018</p>
+<!--                     <a class="btn btn-twitter btn-lg col-lg-2" href="https://twitter.com/StudyJSdotCom" target="_blank"><i class="icon-twitter icon-large"></i> Twitter</a> -->
+<!-- 	   				<a class="btn btn-facebook btn-lg col-lg-2" href="https://www.facebook.com/StudyJSdotcom/" target="_blank"><i class="icon-facebook icon-large"></i> Facebook</a> -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+<div class="container" id="footer">
+   <div class="row">
+    <div class="col col-sm-12">
+      
+      
+<!-- 	   <a class="btn btn-google-plus btn-lg" href="#"><i class="icon-google-plus icon-large"></i> Google+</a> -->
+      </div>
+      
+    </div>
+  </div>
+   
+   
+</div>
+    <!-- jQuery -->
+    <script src="../../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../js/bootstrap.min.js"></script>
+
+</body>
+<script type="text/javascript">
+	  
+      this.downloadImage = function (index) {
+        index = Number(index);
+        var id;
+        if (index === 1) {
+            id = 'canvas19801080';
+        } else if (index === 2) {
+            id = 'canvas9001125';
+        } else if (index === 3) {
+            id = 'canvas240240';
+        }
+        var canvas = document.getElementById(id);
+        var pixels = new Uint8Array(canvas.width * canvas.height * 4);
+        var gl = gls[index];
+        gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        
+        c.width = canvas.width;
+        c.height = canvas.height;
+        var ctx = c.getContext('2d');
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imgData.data;
+
+        var len = canvas.width * canvas.height * 4;
+        for (var i = 0; i < len; i=i+4) {
+            data[i] = pixels[i];
+            data[i+1] = pixels[i+1];
+            data[i+2] = pixels[i+2];
+            data[i+3] = 255;
+        }
+        ctx.putImageData(imgData, 0, 0);
+        var image = canvas.toDataURL("image/jpg");
+        //document.getElementById('download').href = image;
+        //document.getElementById('download').click();
+
+
+        dataURIToBlob(image, function(blob) {
+            var a = document.createElement('a');
+            a.download = 'image.jpg';
+            a.innerHTML = 'download';
+            // the string representation of the object URL will be small enough to workaround the browser's limitations
+            document.getElementById('download').href = URL.createObjectURL(blob);
+            // you must revoke the object URL, 
+            //   but since we can't know when the download occured, we have to attach it on the click handler..
+            a.onclick = function() {
+            // ..and to wait a frame
+            requestAnimationFrame(function() {
+                URL.revokeObjectURL(a.href);
+                });
+                a.removeAttribute('href')
+            };
+            document.getElementById('download').click();
+            });
+    };
+
+    var c = document.getElementById('smallcanvas');
+
+    function dataURIToBlob(dataURI, callback) {
+        var binStr = atob(dataURI.split(',')[1]),
+            len = binStr.length,
+            arr = new Uint8Array(len);
+        
+        for (var i = 0; i < len; i++) {
+            arr[i] = binStr.charCodeAt(i);
+        }
+        
+        callback(new Blob([arr]));
+    }
+
+    function isPowerOf2(value) {
+        return (value & (value - 1)) == 0;
+    };
+    
+    function setupTextureFilteringAndMips(width, height, gl){
+        if (isPowerOf2(width) && isPowerOf2(height)) {
+            // the dimensions are power of 2 so generate mips and turn on 
+            // tri-linear filtering.
+            gl.generateMipmap(gl.TEXTURE_2D);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+        } else {
+            // at least one of the dimensions is not a power of 2 so set the filtering
+            // so WebGL will render it.
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        }
+    }
+    var vertexBuffer, verticesAttr, textureBuffer, textureAttr, _startCoords, _endCoords, programs = [];
+    var updateCanvas = function (gl) {
+        var startCoords = gl.getUniformLocation(program, 'startCoords');
+        var endCoords = gl.getUniformLocation(program, 'endCoords');
+        var rendering = gl.getUniformLocation(program, 'rendering');
+        gl.uniform1f(rendering, 0.0);
+
+        gl.uniform2fv(startCoords, _startCoords);
+        gl.uniform2fv(endCoords, _endCoords);
+
+        gl.clear(gl.DEPTH_BUFFER_BIT|gl.COLOR_BUFFER_BIT);
+        gl.bindTexture(gl.TEXTURE_2D, texs[0]);
+    
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.vertexAttribPointer(verticesAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);
+    
+        gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
+        gl.vertexAttribPointer(textureAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 6);
+    };
+
+    var calculateAspectRatio = function (image, gl, index) {
+        var cols = image.width;
+        var rows = image.height;
+        var imageAspectRatio = cols / rows;
+        var ele = gl.canvas;
+        if (index === 10) {
+            ele = fcanvas;
+        }
+        var windowWidth = ele.width;
+        var windowHeight = ele.height;
+        var canvasAspectRatio = windowWidth / windowHeight;
+        var renderableHeight, renderableWidth;
+        var xStart, yStart;
+        var AR = {};
+        /// If image's aspect ratio is less than canvas's we fit on height
+        /// and place the image centrally along width
+        if(imageAspectRatio < canvasAspectRatio) {
+            renderableHeight = windowHeight;
+            renderableWidth = cols * (renderableHeight / rows);
+            xStart = (windowWidth - renderableWidth) / 2;
+            yStart = 0;
+        }
+    
+        /// If image's aspect ratio is greater than canvas's we fit on width
+        /// and place the image centrally along height
+        else if(imageAspectRatio > canvasAspectRatio) {
+            renderableWidth = windowWidth;
+            renderableHeight = rows * (renderableWidth / cols);
+            xStart = 0;
+            yStart = ( windowHeight  - renderableHeight) / 2;
+        }
+    
+        ///keep aspect ratio
+        else {
+            renderableHeight =  windowHeight ;
+            renderableWidth = windowWidth;
+            xStart = 0;
+            yStart = 0;
+        }
+        AR.renderableHeight = renderableHeight;
+        AR.renderableWidth = renderableWidth;
+        AR.x = xStart;
+        AR.y = yStart;
+        return AR;
+    };
+
+    var renderImageToCanvas = function (gl, program, image, tex, flip, partCanvas, index) {            
+        gl.useProgram(program);
+        image = partCanvas || image;
+        var AR = calculateAspectRatio(image, gl, index);
+        var x1 = AR.x;
+        var x2 = x1 + AR.renderableWidth; 
+        var y1 = AR.y; 
+        var y2 = y1 + AR.renderableHeight;
+        var xOffset = AR.x/gl.canvas.width;
+        var yOffset = AR.y/gl.canvas.height;
+
+        if (index !== 0) {
+            xOffset = 0.0;
+            yOffset = 0.0;
+        }
+
+        var vertices = new Float32Array([
+            x1, y1,
+            x2, y1,
+            x1, y2,
+            x1, y2,
+            x2, y1,
+            x2, y2,
+        ]), 
+        textureVertices = new Float32Array([
+            0.0 + xOffset,  0.0 + yOffset,
+            1.0 - xOffset,  0.0 + yOffset,
+            0.0 + xOffset,  1.0 - yOffset,
+            0.0 + xOffset,  1.0 - yOffset,
+            1.0 - xOffset,  0.0 + yOffset,
+            1.0 - xOffset,  1.0 - yOffset
+        ]);
+        _startCoords = [0.0 + xOffset, 0.0 + yOffset];
+        _endCoords = [1.0 - xOffset, 1.0 - yOffset];
+
+        vertexBuffer = createAndBindBuffer(vertices, gl.ARRAY_BUFFER, gl);
+        verticesAttr = gl.getAttribLocation(program, 'verticesPosition');
+        gl.enableVertexAttribArray(verticesAttr);
+        
+        var flipY = gl.getUniformLocation(program, 'flipY');
+        gl.uniform1f(flipY, flip || -1.0);
+
+        textureBuffer = createAndBindBuffer(textureVertices, gl.ARRAY_BUFFER, gl);
+        textureAttr = gl.getAttribLocation(program, 'texturePosition');
+        gl.enableVertexAttribArray(textureAttr);
+
+        var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+        gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+        
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, partCanvas || image);
+
+        // then either generate mips if the image uses power-of-2 dimensions or 
+        // set the filtering correctly for non-power-of-2 images.
+        setupTextureFilteringAndMips(image.width, image.height, gl);
+
+        gl.clear(gl.DEPTH_BUFFER_BIT|gl.COLOR_BUFFER_BIT);
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.vertexAttribPointer(verticesAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
+        gl.vertexAttribPointer(textureAttr, 2, gl.FLOAT, gl.FALSE, 0, 0);
+
+        var xcoordinates = gl.getUniformLocation(program, 'startCoords');
+        var ycoordinates = gl.getUniformLocation(program, 'endCoords');
+        var rendering = gl.getUniformLocation(program, 'rendering');
+        gl.uniform1f(rendering, 1.0);
+        gl.uniform2fv(xcoordinates, [0.0, 1.0]);
+        gl.uniform2fv(ycoordinates, [1.0, 0.0]);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+    };
+
+    function handleFileSelect(evt) {
+        var obs = fcanvas.getObjects();
+        while (obs.length > 0) {
+            fcanvas.remove(obs[0]);
+        }
+        var files = evt.target.files; // FileList object
+    
+        // Loop through the FileList and render image files as thumbnails.
+        for (var i = 0, f; f = files[i]; i++) {
+    
+          // Only process image files.
+          if (!f.type.match('image.*')) {
+           // continue;
+          }
+    
+          var reader = new FileReader();
+    
+          // Closure to capture the file information.
+          reader.onload = (function(theFile) {
+            return function(e) {
+              // Render thumbnail.
+              image.onload = function() {
+
+                    var gl = gls[0];
+                    gl.canvas.width = image.width;
+                    gl.canvas.height = image.height;
+                    gl.viewport(0, 0, image.width, image.height);
+
+                    for (var i = 0; i < 4; i++) {
+                        var _gl = gls[i];
+                        var program = programs[i];
+                        renderImageToCanvas(_gl, program, image, texs[i]);
+                    }
+
+                    var AR = calculateAspectRatio(image, gl, 10);
+                    console.log(AR);
+                    var scaleX = AR.renderableWidth/image.width;
+                    var scaleY = AR.renderableHeight/image.height;
+                    var oImg = new fabric.Image(gl.canvas,
+                    {
+                        selectable : false,
+                        lockUniScaling: true,
+                        centeredScaling: true,
+                        alignX : 'mid',
+                        alignY : 'mid',
+                        scaleX : scaleX,
+                        scaleY : scaleY
+                    });
+                    fcanvas.add(oImg);
+                    fcanvas.centerObject(oImg);
+                    var rect = new fabric.Rect({
+                        left: window.innerWidth/3,
+                        top: 0,
+                        width: 100,
+                        height: 100,
+                        fill: '',
+                        stroke: 'red',
+                        strokeWidth: 3
+                    });
+
+                    rect.setControlsVisibility({
+                        mt: false, // middle top disable
+                        mb: false, // midle bottom
+                        ml: false, // middle left
+                        mr: false, // I think you get it
+                        mtr:false
+                    });
+                    fcanvas.add(rect);
+                    window.fcanvas.renderAll();
+                }
+                //image.src = e.target.result;
+                e.target.result = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAABACAYAAAD1Xam+AAAE2klEQVR4Xu3dW4+qMBSG4eLs//+TZVIH3agc2rLO67sg8WKShkQe+kLHTqWU+d9tKprHj/L48zSV+20q83Jofa7jq4x9L+V+n8q8HFqf6/gqY89K436cr8b5TxYAqPhoIvC48KbMANQLoOQFoF6Ic04AzQCgicDrzrsgoHIX1px9vO5Efwio3IWVZx+Pc14QyHT+pgDQQuBt6p0xB94ueuSAFgDrcaUgNgeABgJf7Z0tB77u+siBLM9DTAIgjcDmw7dMObA57UcOSN2Ft7CRGtssAJII7D59z5IDu92PHIieA6YBkELg8PVbhhw4fPCHHIicA+YBkEDg9P179Bw4ffKPHJCakkvngAsAuBE4BaC+ooucA6cA1HfkyIGIOeAGAE4EmgCIvFioCQAsFoq4WMgVAFwINAOwzAS6/p54gQ/L2M0A/M0Eok6Hm1o/2GIhdwBwINB9UUXLgS4AkAN1xWCUHHAJADUC3QBEy4FuAJADUXLALQCUCAwBECkHhgBADkT43wHXAFAhMAxAlLcDwwAgB7zngHsAKBC4BECEHLgEAHLAcw6EAOAqApcB8J4DlwFADnjNgTAAXEGABADPOUACAHLAYw6EAmAUATIAvOYAGQDIAW85EA6AEQRIAfCYA6QAIAc85UBIAHoRIAfAWw6QA4Ac8JIDYQHoQYAFAE85wAIAcsBDDoQGoBUBNgC85AAbAMgB6zkQHoAWBFgB8JADrAAgByznQAoAzhBgB8B6DrADgBywmgNpADhCQAQAyzkgAgBywGIOpAJgDwExAKzmgBgAyAFrOZAOgC0ERAGwmAOiACAHLOVASgA+ERAHwFoOiAOAHLCSA2kBWCOgAoClHFABADlgIQdSA/BEQA0AKzmgBgByQDsHAADxj3YO7Sysve+AKgDIAc0cmKZS5p/bVOrdMONRz111BrCMr7rvwLI1d9Ov4rJt4419BzR+aPQBwNlCmcgwVADWd21VDLS2ITMBAHJAIwdeAGRFwBQAWm8HzACAHJDOgTcAMiJgDgCNtwMrANbTUL0NQJADUjnwBUA2BD4BSJkD5gBADkjlwCYAmRAwC4BkDpgEADkgkQO7AGRBwDQAUjmwAwByoCL0/5Calr+lF/M2ZIcAZEDgCIA0OdDwJdd7HoAc4MyBUwCiI+ACAO4cMA8AcoArB5oAiIyAGwA4c6ABAORAzBxoBuC5GCjaqsFWAELngBsAkAPUOdANQLTZgDsAOHLAFQDIAcocGAIgEgIuAaDOgU4AkANxcmAYgCgIjAAQLgdcAoAcoMiBSwBEQMA1AFQ54BYA5MDVHLgMgHcE3ANAkQMXAEAO+M4BEgA8I3AVgBA54B4A5MBoDpAB4BWBMABcyYEQACAHRnKAFACPCIQCYDQHiABADvjLAXIAvCFACYDbHAgFAHKgJwdYAPCEQEgAenMgHADIgdYcYAPACwJhAejJAQYAkAM+coAVAA8IcAHgKgfCAoAcOMsBdgCsIxAegJYcCA0AcuAoB0QAsIxACgDOcoAZAOSA3RwQA8AqAhIAmM+BFAAgB7ZyQBQAiwikAmAvB9IAgBz4zAFxAKwhkA6ArRwQBAA5YCsHVACwhIA0ACZzIB0AyIFnDqgBYAWBtACscyAlAMiBmgOqAFhAIDUAzxxQAgA5oJ8DvzTCBPCCNpyfAAAAAElFTkSuQmCC';
+                dataURIToBlob(e.target.result, function (data) {
+                    image.src = URL.createObjectURL(data);
+                });
+            };
+          })(f);
+    
+          // Read in the image file as a data URL.
+          reader.readAsDataURL(f);
+        }
+        document.getElementById('downloadArea').style.display = 'block';
+        document.getElementById('fcanvas').style.display = 'block';
+        document.getElementById('canvases').style.display = 'block';
+      }
+    
+      document.getElementById('inputFile').addEventListener('change', handleFileSelect, false);
+
+      document.getElementById('updateVP').onclick = function () {
+        var gl = gls[0];
+        renderImageToCanvas(gl, programs[0], image, texs[0], 1.0, null, 0);
+
+        var rectangle = fcanvas._objects[1];
+
+        var AR = calculateAspectRatio(image, gl, 10);
+        console.log(AR);
+        var scaleX = AR.renderableWidth/image.width;
+        var scaleY = AR.renderableHeight/image.height;
+        var left = ((rectangle.left - AR.x)) / scaleX;
+        var top = ((rectangle.top - AR.y)) / scaleY;
+        var width = (rectangle.width * rectangle.scaleX) / scaleX;
+        var height = (rectangle.height * rectangle.scaleY) / scaleY;
+        
+        //get image data
+        console.log(gl.canvas.width, left, top, width, height);
+        var pixels = new Uint8Array(width * height * 4);
+        gl.readPixels(left, top, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+        c.width = width;
+        c.height = height;
+        var ctx = c.getContext('2d');
+        var imgData = ctx.getImageData(0, 0, width, height);
+        var data = imgData.data;
+
+        var len = width * height * 4;
+        for (var i = 0; i < len; i=i+4) {
+            data[i] = pixels[i];
+            data[i+1] = pixels[i+1];
+            data[i+2] = pixels[i+2];
+            data[i+3] = 255;
+        }
+        ctx.putImageData(imgData, 0, 0);
+        renderImageToCanvas(gl, programs[0], image, texs[0], -1.0, null, 0);
+
+        for (var i = 1; i < 4; i++) {
+            var gl = gls[i];
+            var program = programs[i];
+            renderImageToCanvas(gl, program, image, texs[i], -1.0, c);
+        }
+
+        alert('Conversion done...');
+
+      }
+
+    var adjustCanvas = function (canvas) {
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        var fcanvas = new fabric.Canvas('fabricCanvas');
+        fcanvas.setWidth(w);
+        fcanvas.setHeight(h);
+        fcanvas.hoverCursor = 'primary';
+        
+        window.fcanvas = fcanvas;
+
+        document.getElementById('canvas19801080').style.width = w*0.65 + 'px';
+        document.getElementById('canvas9001125').style.width = w*0.25 + 'px';
+        document.getElementById('canvas240240').style.width = w*0.10 + 'px';
+    }
+
+    
+    var canvas = document.getElementById('canvas');
+    var canvas19801080 = document.getElementById('canvas19801080');
+    var canvas9001125 = document.getElementById('canvas9001125');
+    var canvas240240 = document.getElementById('canvas240240');
+    adjustCanvas(canvas);
+
+    var getWebGLContext = function(canvas){
+        var ctx = null;
+        
+        if (canvas == null){
+            alert('there is no canvas on this page');
+            return null;
+        }	
+        var webglContextParams = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
+        for (var index = 0; index < webglContextParams.length; index++) {
+            try {
+                ctx = canvas.getContext(webglContextParams[index], {preserveDrawingBuffer : true});
+                if(ctx) {
+                    //breaking as we got our context
+                    break;
+                }
+            } catch (E) {
+                console.log(E);
+            }
+        }
+        if(ctx === null) {
+            alert('WebGL is not supported on your browser.');
+        } else {
+            return ctx;
+        }
+    }
+    
+    var createVertexShader = function (vertexShaderSource, gl) {
+        var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.compileShader(vertexShader);
+        return vertexShader;
+    }
+    
+    var createFragmentShader = function (fragmentShaderSource, gl) {
+        var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+        gl.compileShader(fragmentShader);
+        return fragmentShader;
+    }
+    
+    
+    var createAndLinkPrograms = function (vertexShader, fragmentShader, gl) {
+        var p = gl.createProgram();
+        gl.attachShader(p, vertexShader);
+        gl.attachShader(p, fragmentShader);
+        gl.linkProgram(p);
+        if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+            alert('Could not initialise shaders');
+        }
+        //gl.useProgram(p);
+        return p;
+    }
+    
+    var createAndBindBuffer = function (verticesOrIndices, bufferType, gl) {
+        var buffer = gl.createBuffer();
+        gl.bindBuffer(bufferType, buffer);
+        gl.bufferData(bufferType, verticesOrIndices, gl.STATIC_DRAW);
+        //clear memory
+    //	gl.bindBuffer(bufferType, null);
+        return buffer;
+    }
+
+    var gl1 = getWebGLContext(canvas);
+    var gl19801080 = getWebGLContext(canvas19801080);
+    var gl9001125 = getWebGLContext(canvas9001125);
+    var gl240240 = getWebGLContext(canvas240240);
+    var gls = [gl1, gl19801080, gl9001125, gl240240];
+    gl1.viewport(0, 0, gl1.canvas.width, gl1.canvas.height);
+    gl19801080.viewport(0, 0, gl19801080.canvas.width, gl19801080.canvas.height);
+    gl9001125.viewport(0, 0, gl9001125.canvas.width, gl9001125.canvas.height);
+    gl240240.viewport(0, 0, gl240240.canvas.width, gl240240.canvas.height);
+    //create and compile Vertex Shader
+    
+    for (var i = 0; i < 4; i++) {
+        var vertexShader = createVertexShader([
+            'attribute vec2 verticesPosition;',
+            'attribute vec2 texturePosition;',
+            'uniform vec2 u_resolution;',
+            'uniform float flipY;',
+            'varying highp vec2 vTextureCoord;',
+            'void main() {',
+                // convert the rectangle from pixels to 0.0 to 1.0
+            'vec2 zeroToOne = verticesPosition / u_resolution;',
+            // convert from 0->1 to 0->2
+            'vec2 zeroToTwo = zeroToOne * 2.0;',
+            // convert from 0->2 to -1->+1 (clipspace)
+            'vec2 clipSpace = zeroToTwo - 1.0;',
+            'gl_Position = vec4(clipSpace * vec2(1, flipY), 0, 1);',
+            'vTextureCoord = texturePosition;',
+            '}'
+        ].join('\n'), gls[i]);
+        //create and compile Fragment Shader
+        var fragmentShader = createFragmentShader([
+            '#ifdef GL_ES',
+        'precision highp float;',
+        '#endif',
+        'varying highp vec2 vTextureCoord;',
+        'uniform vec2 startCoords, endCoords;',
+        'uniform bool rendering;',
+        'uniform sampler2D uImage;',
+        'void main(void) {',
+            'vec3 rgb = texture2D(uImage, vTextureCoord).rgb;',
+            /*'if (rendering) {',
+                'gl_FragColor = vec4(rgb, 1.0);',
+            '} else {',
+                'if (vTextureCoord.x > startCoords.x &&',
+                    'vTextureCoord.y > startCoords.y && ',
+                    'vTextureCoord.x < endCoords.x &&',
+                    'vTextureCoord.y < endCoords.y) { ',
+                    'gl_FragColor = vec4(1.0 - rgb, 1.0);',
+                '} else {',
+                    'gl_FragColor = vec4(rgb, 1.0);',
+                '}',
+            '}',*/
+            'gl_FragColor = vec4(rgb, 1.0);',
+        '}'].join('\n'), gls[i]);
+    
+            //Create,link and use the program.
+            program = createAndLinkPrograms(vertexShader, fragmentShader, gls[i]);
+            programs.push(program);
+    }
+
+    var image = new Image();
+    //create a texture
+    var getTexture = function (gl) {
+        var t = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, t);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+                    new Uint8Array([255, 0, 0, 255])); // red
+        return t;
+    }
+    var texs = [getTexture(gl1), getTexture(gl19801080), getTexture(gl9001125), getTexture(gl240240)];
+
+
+
+
+
+    
+    /*var rect, isDown, origX, origY;
+
+    fcanvas.on('mouse:down', function(o){
+        isDown = true;
+        var pointer = fcanvas.getPointer(o.e);
+        origX = pointer.x;
+        origY = pointer.y;
+        rect = new fabric.Rect({
+            left: origX,
+            top: origY,
+            originX: 'left',
+            originY: 'top',
+            width: pointer.x-origX,
+            height: pointer.y-origY,
+            angle: 0,
+            fill: '',
+            stroke : 'red',
+            strokeWidth : '3',
+            transparentCorners: false
+        });
+        fcanvas.add(rect);
+    });
+
+    fcanvas.on('mouse:move', function(o){
+        if (!isDown) return;
+        var pointer = fcanvas.getPointer(o.e);
+        
+        if(origX>pointer.x){
+            rect.set({ left: Math.abs(pointer.x) });
+        }
+        if(origY>pointer.y){
+            rect.set({ top: Math.abs(pointer.y) });
+        }
+        
+        rect.set({ width: Math.abs(origX - pointer.x) });
+        rect.set({ height: Math.abs(origY - pointer.y) });
+    });
+
+    fcanvas.on('mouse:up', function(o){
+        isDown = false;
+    });*/
+	</script>
+</html>

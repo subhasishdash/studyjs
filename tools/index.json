@@ -16,5 +16,11 @@
  		"link" : "pdfviewer/pdfcanvasviewer.html",
  		"tags" : "Html5 Canvas",
  		"posted" : "29th May 2018"
+ 	},
+ 	{
+ 		"title" : "Image Cropping in WebGL",
+ 		"link" : "canvas/imageCropping.html",
+ 		"tags" : "Html5 Canvas WebGL",
+ 		"posted" : "7th Dec 2018"
  	}
 ]

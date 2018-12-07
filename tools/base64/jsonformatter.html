@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 	<link rel="shortcut icon" sizes="256x256" href="http://www.studyjs.com/images/logo.PNG" />
-    <title>StudyJS.com : Base64 encode/decode text files</title>
+    <title>StudyJS.com : Format and validate JSON</title>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="http://www.studyjs.com/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +23,25 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<script type="text/javascript">
+    var validateJSON = function () {
+        var jsonStr = document.getElementById('jsonStr');
+        var errMsg = document.getElementById('errMsg');
+        errMsg.innerHTML = '';
+        jsonStr.style.border = '1px #164b78 solid';
+        if (jsonStr.value === '') {
+            return;
+        }
+        try {
+            var output = JSON.stringify(JSON.parse(jsonStr.value), null, '\t');
+            jsonStr.style.border = '1px #0ae60a solid';
+            jsonStr.value = output;
+        } catch(E) {
+            jsonStr.style.border = '1px red solid';
+            errMsg.innerHTML = E.message;
+        }
+    }
+</script>
 </head>
 
 <body>
@@ -71,7 +89,7 @@
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1>Javascript Base64 Encode/Decode</h1>
+                <h1>Javascript JSON Formatter/Validator</h1>
 
                 <!-- Author -->
 <!--                 <p class="lead"> -->
@@ -81,31 +99,29 @@
                 <hr>
 				
                 <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on 27th May 2018</p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on 7th Dec 2018</p>
 
-				<h3><u>Base64 Encode/Decode</u></h3>
-              	
-				<div>
-        <label for="inputFile">Choose file here or type/paste anything in the decoded textarea:</label><br>
+				
+				<!--<div>
+        <label for="inputFile">Choose file here or type/paste anything in the textarea:</label><br>
         <input type="file" id="inputFile">
-    </div>
+    </div>-->
     <br>
-   <div class="row"> 
-    <div class="col-lg-6">
-        <h1>Base64 encoded string</h1>
-        <textarea id="encstr" placeholder="Base64 will appear here" cols="80" rows="25"></textarea>
+   <div class="row" id="jsonInputArea"> 
+       <div class="col-6">
+        <!--<h1>Please Input JSON String Below to Format and Validate</h1>-->
+        <span id="errMsg" style="color:red;"></span>
+        <textarea id="jsonStr" oninput="validateJSON()" placeholder="Please Input JSON String Below to Format and Validate" 
+        cols="80" rows="15"></textarea><br/>
+        <button class="btn btn-primary" onclick="validateJSON()">Format and Validate</button>
     </div>
-
-    <div class="col-lg-6">
-        <h1>Base64 decoded string</h1>
-        <textarea id="decstr" placeholder="String will appear here" cols="80" rows="25"></textarea>
     </div>
-</div>
 
                <div class="row">
-                <div class="col-xs-9">
-                  <h4><span class="label label-default">JavaScript</span></h4><h4>
-                  <small style="font-family:courier,'new courier';" class="text-muted">27th May 2018</small>
+                <div class="col-9">
+                  <h4><span class="label label-default">JavaScript</span>
+                    <span class="label label-default">JSON</span></h4><h4>
+                  <small style="font-family:courier,'new courier';" class="text-muted">7th Dec 2018</small>
                   </h4></div>
                 <div class="col-xs-3"></div>
               </div>
